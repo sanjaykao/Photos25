@@ -19,11 +19,15 @@ public class Album implements Serializable{
 	
 	public Album(String name) {
 		albumName = name;
+		photos = new ArrayList<Photo>();
+		numOfPhotos = 0;
 	}
 	
 	public Album(String name, ArrayList<Photo> pics) {
 		albumName = name;
 		photos = pics;
+		numOfPhotos = pics.size();
+		//need to add a function to find earliest and latest dates
 	}
 	
 	public String getAlbumName() {

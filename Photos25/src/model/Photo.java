@@ -20,6 +20,8 @@ public class Photo implements Serializable{
 	
 	public Photo(String name) {
 		this.photoName = name;
+		this.tags = new ArrayList<Tag>();
+		this.albums = new ArrayList<Album>();
 	}
 		
 	public String getPhotoName() {
