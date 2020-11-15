@@ -12,6 +12,7 @@ public class AdminUser implements Serializable{
 	private static final long serialVersionUID = 1L;
 	public String admin;
 	public ArrayList<User> users;
+	public User currentUser; //to keep track of which user is logged in
 	
 	public static final String storeDir = ".";
 	public static final String storeFile = "users.dat";
@@ -36,6 +37,19 @@ public class AdminUser implements Serializable{
 				users.remove(i);
 			}
 		}
+	}
+	
+	public boolean checkUser(String username) {
+		String existingUser;
+		for(User user : users) {
+			existingUser = user.getUsername();
+			if(existingUser.equals(username)) {
+				currentUser = user;
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	public ArrayList<User> getUsers(){

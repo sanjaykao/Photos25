@@ -14,32 +14,48 @@ public class Photos extends Application {
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
 		// get loader and pane for login 
-		FXMLLoader loader = new FXMLLoader();   
-		loader.setLocation(
+		FXMLLoader loginLoader = new FXMLLoader();   
+		loginLoader.setLocation(
 				getClass().getResource("/view/login.fxml"));
-		AnchorPane root = (AnchorPane)loader.load();
+		AnchorPane loginRoot = (AnchorPane)loginLoader.load();
 		
-		LoginController controller = 
-				loader.getController();
+		LoginController loginController = 
+				loginLoader.getController();
+		
 
-        Scene scene = new Scene(root);
+        Scene loginScene = new Scene(loginRoot);
         
         // get loader and pane for admin
-        FXMLLoader loader1 = new FXMLLoader();
-        loader1.setLocation(
+        FXMLLoader adminLoader = new FXMLLoader();
+        adminLoader.setLocation(
 				getClass().getResource("/view/AdminHome.fxml"));
-		AnchorPane root1 = (AnchorPane)loader.load();
-		
-		AdminHomeController controller1 = 
-				loader.getController();
 
-        Scene scene1 = new Scene(root1);
+        AnchorPane adminRoot = (AnchorPane)loginLoader.load();
+		
+		//might be needed for logging out
+        //AdminHomeController adminController = loginLoader.getController();
+
+        Scene adminScene = new Scene(adminRoot);
         
-        // send admin scene to login controller
+        //get loader and pane for user
+        FXMLLoader userLoader = new FXMLLoader();
+        userLoader.setLocation(
+        		getClass().getResource("/view/UserHome.fxml"));
+        
+        AnchorPane userRoot = (AnchorPane)loginLoader.load();
+        
+        //might be needed for logging out
+        //UserHomeController userController = loginLoader.getController();
+        
+        Scene userScene = new Scene(userRoot);
+        
+        // send admin and user scenes to login controller
+        loginController.setAdminScene(adminScene);
+        loginController.setUserScene(userScene);
         
         
         stage.setTitle("Login");
-        stage.setScene(scene);
+        stage.setScene(loginScene);
         stage.show();
 	}
 

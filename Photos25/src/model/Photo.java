@@ -1,8 +1,9 @@
 package model;
 
 import java.io.*;
-import java.time.LocalDate;
 import java.util.*;
+
+import javafx.scene.image.Image;
 
 public class Photo implements Serializable{
 
@@ -12,14 +13,19 @@ public class Photo implements Serializable{
 	private static final long serialVersionUID = 1L;
 	public String photoName; //not sure about this one
 	public String caption;
-	public Date date;
+	public Image image;
+	public Calendar date;
 	public ArrayList<Tag> tags;
 	public ArrayList<Album> albums;
 	
 	//NEED TO FIGURE OUT HOW TO IMPORT AN IMAGE
 	
-	public Photo(String name) {
+	public Photo(String name, Image image, Calendar date) {
 		this.photoName = name;
+		this.caption = "";
+		this.image = image;
+		this.date = date;
+		date.set(Calendar.MILLISECOND, 0);
 		this.tags = new ArrayList<Tag>();
 		this.albums = new ArrayList<Album>();
 	}
@@ -36,7 +42,7 @@ public class Photo implements Serializable{
 		caption = content;
 	}
 	
-	public Date getDate() {
+	public Calendar getDate() {
 		return date;
 	}
 	
