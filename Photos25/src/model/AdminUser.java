@@ -13,11 +13,13 @@ public class AdminUser implements Serializable{
 	public String admin;
 	public ArrayList<User> users;
 	
+	public static final String storeDir = ".";
+	public static final String storeFile = "users.dat";
+	
 	//idk about this
 	public AdminUser() {
 		admin = "admin";
 		users = new ArrayList<User>();
-		
 	}
 	
 	public void addUser(String username) {
@@ -34,5 +36,44 @@ public class AdminUser implements Serializable{
 				users.remove(i);
 			}
 		}
+	}
+	
+	public ArrayList<User> getUsers(){
+		return users;
+	}
+	
+	public static void write(AdminUser admin) {
+		ObjectOutputStream oos;
+		try {
+			oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + storeFile, false));
+			oos.writeObject(admin);
+			oos.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}
+	}
+	
+	public static AdminUser read() {
+		ObjectInputStream ois;
+		try {
+			ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + storeFile));
+			AdminUser admin = (AdminUser)ois.readObject();
+			ois.close();
+			return admin;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}
+		return null;
 	}
 }

@@ -1,7 +1,7 @@
 package app;
 
 import controller.*;
-import view.*;
+//import view.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,7 +13,7 @@ public class Photos extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
-
+		// get loader and pane for login 
 		FXMLLoader loader = new FXMLLoader();   
 		loader.setLocation(
 				getClass().getResource("/view/login.fxml"));
@@ -21,13 +21,29 @@ public class Photos extends Application {
 		
 		LoginController controller = 
 				loader.getController();
-		controller.start(stage);
 
         Scene scene = new Scene(root);
+        
+        // get loader and pane for admin
+        FXMLLoader loader1 = new FXMLLoader();
+        loader1.setLocation(
+				getClass().getResource("/view/AdminHome.fxml"));
+		AnchorPane root1 = (AnchorPane)loader.load();
+		
+		AdminHomeController controller1 = 
+				loader.getController();
 
+        Scene scene1 = new Scene(root1);
+        
+        // send admin scene to login controller
+        
+        
+        stage.setTitle("Login");
+        stage.setScene(scene);
+        stage.show();
 	}
 
-	public void main(String[] args) {
+	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
 		launch(args);
