@@ -14,7 +14,7 @@ public class Photos extends Application {
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
 		// get loader and pane for login 
-		FXMLLoader loginLoader = new FXMLLoader();   
+		FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/view/login.fxml"));
 		loginLoader.setLocation(
 				getClass().getResource("/view/login.fxml"));
 		AnchorPane loginRoot = (AnchorPane)loginLoader.load();
@@ -30,7 +30,7 @@ public class Photos extends Application {
         adminLoader.setLocation(
 				getClass().getResource("/view/AdminHome.fxml"));
 
-        AnchorPane adminRoot = (AnchorPane)loginLoader.load();
+        AnchorPane adminRoot = (AnchorPane)adminLoader.load();
 		
 		//might be needed for logging out
         //AdminHomeController adminController = loginLoader.getController();
@@ -42,7 +42,7 @@ public class Photos extends Application {
         userLoader.setLocation(
         		getClass().getResource("/view/UserHome.fxml"));
         
-        AnchorPane userRoot = (AnchorPane)loginLoader.load();
+        AnchorPane userRoot = (AnchorPane)userLoader.load();
         
         //might be needed for logging out
         //UserHomeController userController = loginLoader.getController();
