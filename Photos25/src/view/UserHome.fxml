@@ -7,10 +7,22 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane 
+<AnchorPane prefHeight="300" prefWidth="500"
 	xmlns="http://javafx.com/javafx/8"
 	xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="controller.UserHomeController">
-	
-
+	<children>
+		<TilePane layoutX="14.0" layoutY="14.0" prefHeight="250.0" prefWidth="300.0" fx:id="tilePane">
+			<padding>
+            	<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         	</padding>
+		</TilePane>
+		
+		<Button layoutX="350" layoutY="90" prefHeight="27.0" prefWidth="80.0" mnemonicParsing="false" text="Create album" onAction="#createAlbum" fx:id="add" />
+        <Button layoutX="350" layoutY="130" prefHeight="27.0" prefWidth="80.0" mnemonicParsing="false" text="Delete album" onAction="#deleteAlbum" fx:id="delete" />
+        <Button layoutX="350" layoutY="170" prefHeight="27.0" prefWidth="80.0" mnemonicParsing="false" text="Rename" onAction="#renameAlbum" fx:id="rename" />
+        <Button layoutX="350" layoutY="210" prefHeight="27.0" prefWidth="80.0" mnemonicParsing="false" text="Open" onAction="#openAlbum" fx:id="open" />
+        <Button layoutX="350" layoutY="250" prefHeight="27.0" prefWidth="80.0" mnemonicParsing="false" text="Search Photos" onAction="#searchPhotos" fx:id="search" />
+        <Button layoutX="406" layoutY="14.0" prefHeight="27.0" prefWidth="80.0" mnemonicParsing="false" text="Logout" onAction="#logout" fx:id="logout" />
+	</children>
 </AnchorPane>

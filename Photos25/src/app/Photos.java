@@ -33,26 +33,26 @@ public class Photos extends Application {
         AnchorPane adminRoot = (AnchorPane)adminLoader.load();
 		
 		//might be needed for logging out
-        //AdminHomeController adminController = loginLoader.getController();
+        AdminHomeController adminController = (AdminHomeController)adminLoader.getController();
+        adminController.setLoginScene(loginScene);
 
         Scene adminScene = new Scene(adminRoot);
         
         //get loader and pane for user
-        FXMLLoader userLoader = new FXMLLoader();
+       /* FXMLLoader userLoader = new FXMLLoader();
         userLoader.setLocation(
         		getClass().getResource("/view/UserHome.fxml"));
         
-        AnchorPane userRoot = (AnchorPane)userLoader.load();
+        AnchorPane userRoot = (AnchorPane)userLoader.load();*/
         
         //might be needed for logging out
         //UserHomeController userController = loginLoader.getController();
         
-        Scene userScene = new Scene(userRoot);
+       // Scene userScene = new Scene(userRoot);
         
         // send admin and user scenes to login controller
         loginController.setAdminScene(adminScene);
-        loginController.setUserScene(userScene);
-        
+        //loginController.setUserScene(userScene);
         
         stage.setTitle("Login");
         stage.setScene(loginScene);

@@ -4,6 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.*;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
@@ -26,8 +28,14 @@ public class AdminHomeController {
 	private ArrayList<User> users;
 	private AdminUser admin;
 	
-	public void start(Stage mainStage) {
+	private Scene loginScene;
+	
+	@FXML
+	private void initialize() {
 		readSerial();
+	}
+	
+	public void start(Stage mainStage) {
 		if(users.size() > 0) {
 			obsList = FXCollections.observableArrayList();
 	    	obsList = getList();
@@ -52,20 +60,22 @@ public class AdminHomeController {
 		TextInputDialog td = new TextInputDialog();
 		td.setTitle("Add a user");
 		td.setHeaderText("Enter a name");
-		td.showAndWait();
+		Optional<String> result = td.showAndWait();
 		
-		String name = td.getEditor().getText();
-		if(exists(name)) {
-			setWarning("Cannot add user", "This name is already taken!");
-		}else {
-			admin.addUser(name);
-			AdminUser.write(admin);
-			readSerial();
-			
-			obsList = getList();
-			listView.setItems(obsList);
-			int ind = getIndex(name);
-			listView.getSelectionModel().select(ind);
+		if(result.isPresent()) {
+			String name = td.getEditor().getText();
+			if(exists(name)) {
+				setWarning("Cannot add user", "This name is already taken!");
+			}else {
+				admin.addUser(name);
+				AdminUser.write(admin);
+				readSerial();
+				
+				obsList = getList();
+				listView.setItems(obsList);
+				int ind = getIndex(name);
+				listView.getSelectionModel().select(ind);
+			}
 		}
 	}
 	
@@ -80,7 +90,7 @@ public class AdminHomeController {
     		Optional<ButtonType> result = alert.showAndWait();
     		if(result.get() == ButtonType.OK) {
     			int index = listView.getSelectionModel().getSelectedIndex();
-    			if((index > 0) && (index == users.size())) {
+    			if((index > 0) && (index == users.size() - 1)) {
     				index--;
     			}
     			
@@ -90,8 +100,12 @@ public class AdminHomeController {
     					break;
     				}
     			}
-
-    			AdminUser.write(admin);
+    			
+    			if(users.size() == 0) {
+    				AdminUser.delete();
+    			}else {
+    				AdminUser.write(admin);
+    			}
     			readSerial();
     			
     			obsList = getList();
@@ -101,6 +115,27 @@ public class AdminHomeController {
     	}else {
     		setWarning("No user selected", "Please select a user or add more users.");
     	}
+	}
+	
+	@FXML
+	private void logout(ActionEvent event) {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirm logout");
+		alert.setContentText("Are you sure you want to logout?");
+		
+		Optional<ButtonType> result = alert.showAndWait();
+		if(result.get() == ButtonType.OK) {
+			openLoginScene(event);
+		}
+	}
+	
+	public void setLoginScene(Scene scene) {
+		loginScene = scene;
+	}
+	
+	public void openLoginScene(ActionEvent event) {
+		Stage primaryStage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
+		primaryStage.setScene(loginScene);
 	}
 	
 	private void getSelected() {

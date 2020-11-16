@@ -19,5 +19,6 @@
       	</ListView>
       	<Button layoutX="250" layoutY="90" prefHeight="27.0" prefWidth="80.0" mnemonicParsing="false" text="Add user" onAction="#addUser" fx:id="add" />
         <Button layoutX="250" layoutY="130" prefHeight="27.0" prefWidth="80.0" mnemonicParsing="false" text="Delete user" onAction="#deleteUser" fx:id="delete" />
+        <Button layoutX="406" layoutY="14.0" prefHeight="27.0" prefWidth="80.0" mnemonicParsing="false" text="Logout" onAction="#logout" fx:id="logout" />
 	</children>
 </AnchorPane>

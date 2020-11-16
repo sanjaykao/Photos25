@@ -35,7 +35,7 @@ public class LoginController {
 	private void loginAction(ActionEvent event) {
 		
 		String user = username.getText().trim();
-		File existingFile = new File(path);
+		/*File existingFile = new File(path);
 		
 		//create the stock account
 		if(!existingFile.exists()) {
@@ -50,12 +50,12 @@ public class LoginController {
 			File stockPhotoFile;
 			
 			
-		}
+		}*/
 		
 		//if admin, open adminScene
-		/*if(user.equals("admin")) {
+		if(user.equals("admin")) {
 			openAdminScene(event);
-		} */
+		} 
 		//if user, open userScene
 	}
 	

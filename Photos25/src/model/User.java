@@ -14,6 +14,8 @@ public class User implements Serializable{
 	public String username;
 	public ArrayList<Album> albums;
 	
+	public static final String storeDir = ".";
+	
 	public User(String username) {
 		this.username = username;
 		this.albums = new ArrayList<Album>();
@@ -110,5 +112,38 @@ public class User implements Serializable{
 		return null;
 	}
 	
-	//idk about logout function
+	public static void write(User user) {
+		ObjectOutputStream oos;
+		try {
+			oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + user.getUsername(), false));
+			oos.writeObject(user);
+			oos.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}
+	}
+	
+	/*public static User read() {
+		ObjectInputStream ois;
+		try {
+			ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + ));
+			User user = (User)ois.readObject();
+			ois.close();
+			return user;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}
+		return null;
+	}*/
 }
