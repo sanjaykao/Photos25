@@ -85,4 +85,9 @@ public class AdminUser implements Serializable{
 		File file = new File(storeDir + File.separator + storeFile);
 		file.delete();
 	}
+	
+	public void deleteUserFile(String name) {
+		File file = new File(storeDir + File.separator + name + ".dat");
+		file.delete();
+	}
 }

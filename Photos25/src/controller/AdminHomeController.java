@@ -83,6 +83,7 @@ public class AdminHomeController {
 			if(exists(name)) {
 				setWarning("Cannot add user", "This name is already taken!");
 			}else {
+				File userFile = new File("." + File.separator + name + ".dat");
 				admin.addUser(name);
 				AdminUser.write(admin);
 				users = admin.getUsers();
@@ -114,6 +115,7 @@ public class AdminHomeController {
     			
     			for(User user : users) {
     				if(user.getUsername().equals(item)) {
+    					admin.deleteUserFile(user.getUsername());
     					admin.removeUser(user);
     					break;
     				}

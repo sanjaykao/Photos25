@@ -122,7 +122,7 @@ public class User implements Serializable{
 	public static void write(User user) {
 		ObjectOutputStream oos;
 		try {
-			oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + user.getUsername(), false));
+			oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + user.getUsername() + ".dat", false));
 			oos.writeObject(user);
 			oos.close();
 		} catch (FileNotFoundException e) {
@@ -137,7 +137,7 @@ public class User implements Serializable{
 	public static User read(User user) {
 		ObjectInputStream ois;
 		try {
-			ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + user.getUsername()));
+			ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + user.getUsername() + ".dat"));
 			User temp = (User)ois.readObject();
 			ois.close();
 			return temp;
