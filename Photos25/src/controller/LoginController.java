@@ -4,8 +4,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.*;
 import javafx.fxml.FXML;
 //import javafx.fxml.FXMLLoader;
@@ -30,7 +28,7 @@ public class LoginController {
 	@FXML public Button loginButton;
 	
 	@FXML public TextField username;
-	
+		
 	private Scene adminScene;
 	
 	private Scene userScene;
@@ -39,9 +37,12 @@ public class LoginController {
 	
 	public static final String storeFile = "users.dat";
 	
-	ObservableList<String> temp = FXCollections.observableArrayList();
+	public UserHomeController userController;
 	
-	/*@FXML
+	public AdminHomeController adminController;
+
+	
+	@FXML
 	public void initialize() {
 		File existingFile = new File(storeFile);
 		
@@ -69,16 +70,15 @@ public class LoginController {
 			
 			User stockUser = new User("stock");
 			stockUser.addAlbum(stockAlbum);
-			initAdmin(stockUser);
+			adminController.initAdmin(stockUser);
 		}
 		
-	}*/
+	}
 	
 	public void start(Stage mainStage) {
 
 	 }
 	
-	@SuppressWarnings("unchecked")
 	@FXML 
 	private void loginAction(ActionEvent event) throws IOException, ClassNotFoundException {
 		
@@ -100,7 +100,7 @@ public class LoginController {
 			for(User existingUser : users) {
 				existingUsername = existingUser.getUsername();
 				if(existingUsername.equals(user)) {
-					//insert currentUser field change
+					userController.initCurrentUser(existingUser);
 					openUserScene(event);
 				}
 			}	
@@ -129,6 +129,14 @@ public class LoginController {
 	public void openUserScene(ActionEvent event) {
 		Stage primaryStage = (Stage) ((Stage) (event.getSource())).getScene().getWindow();
 		primaryStage.setScene(userScene);
+	}
+	
+	public void setUserController(UserHomeController controller) {
+		this.userController = controller;		
+	}
+	
+	public void setAdminController(AdminHomeController controller) {
+		this.adminController = controller;
 	}
 	
 }

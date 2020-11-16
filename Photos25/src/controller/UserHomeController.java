@@ -165,6 +165,10 @@ public class UserHomeController {
 		primaryStage.setScene(searchScene);
 	}
 	
+	public void initCurrentUser(User user) {
+		this.user = user;
+	}
+	
 	private void displayAlbums() {
 		for(Album album : albums) {
 			if(album.getNumOfPhotos() == 0) {
@@ -214,5 +218,5 @@ public class UserHomeController {
 		alert.setContentText(content);
 		alert.showAndWait();
 	}
-
+	
 }

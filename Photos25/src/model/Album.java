@@ -1,7 +1,6 @@
 package model;
 
 import java.io.*;
-import java.time.LocalDate;
 import java.util.*;
 
 public class Album implements Serializable{
@@ -28,6 +27,11 @@ public class Album implements Serializable{
 		photos = pics;
 		numOfPhotos = pics.size();
 		//need to add a function to find earliest and latest dates
+	}
+	
+	public void addPhotoToAlbum(Photo pic) {
+		photos.add(pic);
+		numOfPhotos++;
 	}
 	
 	public String getAlbumName() {
