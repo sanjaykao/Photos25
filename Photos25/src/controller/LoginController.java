@@ -37,23 +37,25 @@ public class LoginController {
 	
 	public static final String storeFile = "users.dat";
 	
+	public ArrayList<User> users;
+	
 	public UserHomeController userController;
 	
 	public AdminHomeController adminController;
-
 	
-	@FXML
-	public void initialize() {
-		File existingFile = new File(storeFile);
+	public void start(Stage mainStage) {
+
+	 }
+	
+	@FXML 
+	private void loginAction(ActionEvent event) throws IOException, ClassNotFoundException {
+		
+		String user = username.getText().trim();
+		File datFile = new File(storeFile);
 		
 		//create the stock account
-		if(!existingFile.exists()) {
-			try {
-				existingFile.createNewFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		if(!datFile.exists() || !datFile.isFile() || !datFile.canRead()) {
+			System.out.println("enters stock init");
 			Album stockAlbum = new Album("stock");
 			File stockPhotoFile;
 			for(int i = 1; i <= 7; i++) {
@@ -70,21 +72,11 @@ public class LoginController {
 			
 			User stockUser = new User("stock");
 			stockUser.addAlbum(stockAlbum);
-			adminController.initAdmin(stockUser);
+			users = new ArrayList<User>();
+			users.add(stockUser);
+			adminController.initAdmin(users);
 		}
 		
-	}
-	
-	public void start(Stage mainStage) {
-
-	 }
-	
-	@FXML 
-	private void loginAction(ActionEvent event) throws IOException, ClassNotFoundException {
-		
-		String user = username.getText().trim();
-		File datFile = new File(storeFile);
-
 		//if admin, open adminScene
 		if (user.equals("admin")) {
 			openAdminScene(event);
@@ -92,7 +84,7 @@ public class LoginController {
 			FileInputStream fis = new FileInputStream(storeFile);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			AdminUser adminUser = (AdminUser) ois.readObject();
-			ArrayList<User> users = adminUser.getUsers();
+			users = adminUser.getUsers();
 			ois.close();
 			fis.close();
 				

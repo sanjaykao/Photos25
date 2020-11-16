@@ -138,10 +138,15 @@ public class AdminHomeController {
 		primaryStage.setScene(loginScene);
 	}
 	
-	public void initAdmin(User user) {
-		admin.addUser(user);
+	public void initAdmin(ArrayList<User> users) {
+		System.out.println("enters initAdmin");
+		this.users = users;
+		
+		/*admin.addUser(user);
 		AdminUser.write(admin);
 		readSerial();
+		obsList = getList();*/
+		
 	}
 	
 	private void getSelected() {
