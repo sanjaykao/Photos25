@@ -8,13 +8,18 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import model.AdminUser;
+import model.Album;
+import model.Photo;
 import model.User;
 
+import java.io.File;
 //import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Optional;
 
 //import app.Photos;
@@ -27,16 +32,27 @@ public class AdminHomeController {
 	private ObservableList<String> obsList;
 	private ArrayList<User> users;
 	private AdminUser admin;
+	private User stockUser;
 	
 	private Scene loginScene;
 	
 	@FXML
-	private void initialize() {
+	private void initialize() {		
 		readSerial();
-	}
-	
-	public void start(Stage mainStage) {
+		
+		//create the stock account upon startup
+		stockUser = initStockUser();
+		if(stockUser != null) {
+			//System.out.println("stockUser exists: " + stockUser.getUsername());
+			admin.addUser(stockUser);
+			AdminUser.write(admin);
+			readSerial();
+			
+			System.out.println(getList());
+		}
+				
 		if(users.size() > 0) {
+			//System.out.println("arraylist is > 0");
 			obsList = FXCollections.observableArrayList();
 	    	obsList = getList();
 
@@ -138,15 +154,32 @@ public class AdminHomeController {
 		primaryStage.setScene(loginScene);
 	}
 	
-	public void initAdmin(ArrayList<User> users) {
-		System.out.println("enters initAdmin");
-		this.users = users;
+	public User initStockUser() {
+		File datFile = new File("users.dat");
 		
-		/*admin.addUser(user);
-		AdminUser.write(admin);
-		readSerial();
-		obsList = getList();*/
+		//create the stock account
+		if(!datFile.exists() || !datFile.isFile() || !datFile.canRead()) {
+			System.out.println("enters stock init");
+			Album stockAlbum = new Album("stock");
+			File stockPhotoFile;
+			for(int i = 1; i <= 7; i++) {
+				stockPhotoFile = new File("./data/pic" + Integer.toString(i) +".JPG");
+				
+				if(stockPhotoFile != null) {
+					Image pic = new Image(stockPhotoFile.toURI().toString());
+					String picName = stockPhotoFile.getName(); 
+					Calendar date = Calendar.getInstance();
+					Photo newPic = new Photo(picName, pic, date);
+					stockAlbum.addPhotoToAlbum(newPic);
+				}
+			}
+			
+			User stockUser = new User("stock");
+			stockUser.addAlbum(stockAlbum);
+			return stockUser;
+		}
 		
+		return null;
 	}
 	
 	private void getSelected() {
@@ -163,7 +196,7 @@ public class AdminHomeController {
 	}
 	
 	private void readSerial() {
-		admin = AdminUser.read();
+		AdminUser.read();
 		if(admin != null) {
 			users = admin.getUsers();
 		}else {

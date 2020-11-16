@@ -41,19 +41,6 @@ public class AdminUser implements Serializable{
 		}
 	}
 	
-	/*public boolean checkUser(String username) {
-		String existingUser;
-		for(User user : users) {
-			existingUser = user.getUsername();
-			if(existingUser.equals(username)) {
-				currentUser = user;
-				return true;
-			}
-		}
-		
-		return false;
-	}*/
-	
 	public ArrayList<User> getUsers(){
 		return users;
 	}
@@ -61,6 +48,7 @@ public class AdminUser implements Serializable{
 	public static void write(AdminUser admin) {
 		ObjectOutputStream oos;
 		try {
+			System.out.println(storeDir + File.separator + storeFile);
 			oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + storeFile, false));
 			oos.writeObject(admin);
 			oos.close();

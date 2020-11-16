@@ -41,7 +41,7 @@ public class LoginController {
 	
 	public UserHomeController userController;
 	
-	public AdminHomeController adminController;
+	public AdminHomeController adminController; 
 	
 	public void start(Stage mainStage) {
 
@@ -54,34 +54,32 @@ public class LoginController {
 		File datFile = new File(storeFile);
 		
 		//create the stock account
-		if(!datFile.exists() || !datFile.isFile() || !datFile.canRead()) {
+		/*if(!datFile.exists() || !datFile.isFile() || !datFile.canRead()) {
 			System.out.println("enters stock init");
 			Album stockAlbum = new Album("stock");
 			File stockPhotoFile;
 			for(int i = 1; i <= 7; i++) {
-				stockPhotoFile = new File("data/pic" + Integer.toString(i) +".JPG");
+				stockPhotoFile = new File("./data/pic" + Integer.toString(i) +".JPG");
 				
 				if(stockPhotoFile != null) {
 					Image pic = new Image(stockPhotoFile.toURI().toString());
 					String picName = stockPhotoFile.getName(); 
 					Calendar date = Calendar.getInstance();
 					Photo newPic = new Photo(picName, pic, date);
-					stockAlbum.getPhotos().add(newPic);
+					stockAlbum.addPhotoToAlbum(newPic);
 				}
 			}
 			
 			User stockUser = new User("stock");
 			stockUser.addAlbum(stockAlbum);
-			users = new ArrayList<User>();
-			users.add(stockUser);
-			adminController.initAdmin(users);
-		}
+			adminController.initStockUser(stockUser);
+		}*/
 		
 		//if admin, open adminScene
 		if (user.equals("admin")) {
 			openAdminScene(event);
 		} else if(datFile.exists()){
-			FileInputStream fis = new FileInputStream(storeFile);
+			FileInputStream fis = new FileInputStream(datFile);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			AdminUser adminUser = (AdminUser) ois.readObject();
 			users = adminUser.getUsers();
