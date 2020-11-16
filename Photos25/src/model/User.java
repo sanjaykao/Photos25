@@ -25,6 +25,10 @@ public class User implements Serializable{
 		return username;
 	}
 	
+	public ArrayList<Album> getAlbums(){
+		return albums;
+	}
+	
 	public void createAlbum(String name) {
 		//create new album in the user home page then add to the arraylist of albums
 		Album newAlbum = new Album(name);
@@ -127,13 +131,13 @@ public class User implements Serializable{
 		}
 	}
 	
-	/*public static User read() {
+	public static User read(User user) {
 		ObjectInputStream ois;
 		try {
-			ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + ));
-			User user = (User)ois.readObject();
+			ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + user.getUsername()));
+			User temp = (User)ois.readObject();
 			ois.close();
-			return user;
+			return temp;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
@@ -145,5 +149,5 @@ public class User implements Serializable{
 			//e.printStackTrace();
 		}
 		return null;
-	}*/
+	}
 }
