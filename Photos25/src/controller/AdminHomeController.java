@@ -46,13 +46,13 @@ public class AdminHomeController {
 			//System.out.println("stockUser exists: " + stockUser.getUsername());
 			admin.addUser(stockUser);
 			AdminUser.write(admin);
-			readSerial();
-			
-			System.out.println(getList());
-		}
-				
+			users = admin.getUsers();
+		} 
+		
+		System.out.println(getList());
+		
 		if(users.size() > 0) {
-			//System.out.println("arraylist is > 0");
+			System.out.println("arraylist is not empty");
 			obsList = FXCollections.observableArrayList();
 	    	obsList = getList();
 
@@ -85,7 +85,9 @@ public class AdminHomeController {
 			}else {
 				admin.addUser(name);
 				AdminUser.write(admin);
-				readSerial();
+				users = admin.getUsers();
+				//readSerial(); 
+				//commented out because list disappears when adding new user after stock 
 				
 				obsList = getList();
 				listView.setItems(obsList);
@@ -119,10 +121,12 @@ public class AdminHomeController {
     			
     			if(users.size() == 0) {
     				AdminUser.delete();
+    				readSerial();
     			}else {
     				AdminUser.write(admin);
+    				users = admin.getUsers();
     			}
-    			readSerial();
+    			//readSerial();
     			
     			obsList = getList();
             	listView.setItems(obsList);
@@ -196,7 +200,7 @@ public class AdminHomeController {
 	}
 	
 	private void readSerial() {
-		AdminUser.read();
+		admin = AdminUser.read();
 		if(admin != null) {
 			users = admin.getUsers();
 		}else {
