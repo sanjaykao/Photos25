@@ -42,6 +42,10 @@ public class User implements Serializable{
 		albums.add(newAlbum);
 	}
 	
+	public void addAlbum(Album album) {
+		albums.add(album);
+	}
+	
 	public void deleteAlbum(String name) {
 		//removes album by name from the albums arraylist
 		String indexName;

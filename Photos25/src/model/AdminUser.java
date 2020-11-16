@@ -29,6 +29,10 @@ public class AdminUser implements Serializable{
 		
 	}
 	
+	public void addUser(User user) {
+		users.add(user);
+	}
+	
 	public void removeUser(User user) {
 		//removes user with specified username in the arraylist of users
 		for(int i = 0; i < users.size(); i++) {

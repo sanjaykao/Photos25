@@ -138,6 +138,12 @@ public class AdminHomeController {
 		primaryStage.setScene(loginScene);
 	}
 	
+	public void initAdmin(User user) {
+		admin.addUser(user);
+		AdminUser.write(admin);
+		readSerial();
+	}
+	
 	private void getSelected() {
 		
 	}

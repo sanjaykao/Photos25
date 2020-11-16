@@ -1,18 +1,28 @@
 package controller;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.*;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+//import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
+//import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
+import model.AdminUser;
 import model.Album;
-import app.Photos;
+import model.Photo;
+//import app.Photos;
+import model.User;
 
 
 public class LoginController {
@@ -25,17 +35,15 @@ public class LoginController {
 	
 	private Scene userScene;
 	
-	private final String path = "users.dat";
+	public static final String storeDir = ".";
 	
-	public void start(Stage mainStage) {
-		
-	 }
+	public static final String storeFile = "users.dat";
 	
-	@FXML 
-	private void loginAction(ActionEvent event) {
-		
-		String user = username.getText().trim();
-		/*File existingFile = new File(path);
+	ObservableList<String> temp = FXCollections.observableArrayList();
+	
+	/*@FXML
+	public void initialize() {
+		File existingFile = new File(storeFile);
 		
 		//create the stock account
 		if(!existingFile.exists()) {
@@ -46,17 +54,63 @@ public class LoginController {
 				e.printStackTrace();
 			}
 			Album stockAlbum = new Album("stock");
-			String stockPath = "data";
 			File stockPhotoFile;
+			for(int i = 1; i <= 7; i++) {
+				stockPhotoFile = new File("data/pic" + Integer.toString(i) +".JPG");
+				
+				if(stockPhotoFile != null) {
+					Image pic = new Image(stockPhotoFile.toURI().toString());
+					String picName = stockPhotoFile.getName(); 
+					Calendar date = Calendar.getInstance();
+					Photo newPic = new Photo(picName, pic, date);
+					stockAlbum.getPhotos().add(newPic);
+				}
+			}
 			
-			
-		}*/
+			User stockUser = new User("stock");
+			stockUser.addAlbum(stockAlbum);
+			initAdmin(stockUser);
+		}
 		
+	}*/
+	
+	public void start(Stage mainStage) {
+
+	 }
+	
+	@SuppressWarnings("unchecked")
+	@FXML 
+	private void loginAction(ActionEvent event) throws IOException, ClassNotFoundException {
+		
+		String user = username.getText().trim();
+		File datFile = new File(storeFile);
+
 		//if admin, open adminScene
-		if(user.equals("admin")) {
+		if (user.equals("admin")) {
 			openAdminScene(event);
-		} 
-		//if user, open userScene
+		} else if(datFile.exists()){
+			FileInputStream fis = new FileInputStream(storeFile);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			AdminUser adminUser = (AdminUser) ois.readObject();
+			ArrayList<User> users = adminUser.getUsers();
+			ois.close();
+			fis.close();
+				
+			String existingUsername;
+			for(User existingUser : users) {
+				existingUsername = existingUser.getUsername();
+				if(existingUsername.equals(user)) {
+					//insert currentUser field change
+					openUserScene(event);
+				}
+			}	
+
+		} else {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Error with logging in");
+			alert.setContentText("Username does not exist");
+			alert.showAndWait();
+		}
 	}
 	
 	public void setAdminScene(Scene scene) {
