@@ -7,10 +7,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane 
+<AnchorPane prefHeight="500" prefWidth="700"
 	xmlns="http://javafx.com/javafx/8"
 	xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="controller.SearchPageController">
-	
-
+	<children>
+		
+		<Button layoutX="586" layoutY="14.0" prefHeight="27.0" prefWidth="100.0" mnemonicParsing="false" text="Logout" onAction="#logout" fx:id="logout" />
+	</children>
 </AnchorPane>

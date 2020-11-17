@@ -21,22 +21,17 @@ import model.User;
 public class LoginController {
 
 	@FXML public Button loginButton;
-	
 	@FXML public TextField username;
-		
-	private Scene adminScene;
-	
-	private Scene userScene;
-	
+	public ArrayList<User> users;
 	public static final String storeDir = ".";
-	
 	public static final String storeFile = "users.dat";
 	
-	public ArrayList<User> users;
+	
+	private Scene adminScene;	
+	private Scene userScene;
 	
 	public UserHomeController userController;
-	
-	public AdminHomeController adminController; 
+	//public AdminHomeController adminController; 
 	
 	public void start(Stage mainStage) {
 
@@ -82,6 +77,7 @@ public class LoginController {
 	
 	public void openAdminScene(ActionEvent event) {
 		Stage primaryStage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
+		primaryStage.setTitle("Admin User Home Page");
 		primaryStage.setScene(adminScene);
 	}
 	
@@ -91,6 +87,7 @@ public class LoginController {
 	
 	public void openUserScene(ActionEvent event) {
 		Stage primaryStage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
+		primaryStage.setTitle("User Home Page");
 		primaryStage.setScene(userScene);
 	}
 	
@@ -98,8 +95,8 @@ public class LoginController {
 		this.userController = controller;		
 	}
 	
-	public void setAdminController(AdminHomeController controller) {
+	/*public void setAdminController(AdminHomeController controller) {
 		this.adminController = controller;
-	}
+	}*/
 	
 }

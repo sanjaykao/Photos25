@@ -49,13 +49,43 @@ public class Photos extends Application {
         
         Scene userScene = new Scene(userRoot);
         
+        // get loader and pane for search page
+        //user home --> search page
+        //search page --> user home OR login
+        FXMLLoader searchLoader = new FXMLLoader();
+        searchLoader.setLocation(
+				getClass().getResource("/view/SearchPage.fxml"));
+        AnchorPane searchRoot = (AnchorPane)searchLoader.load();
+        Scene searchScene = new Scene(searchRoot);
+        
+        SearchPageController searchController = searchLoader.getController();
+        searchController.setLoginScene(loginScene);
+        searchController.setUserScene(userScene);
+        userController.setSearchScene(searchScene);
+        
+        // get loader and pane for album details page
+        //user home --> album details
+        //album details --> user home OR login
+        FXMLLoader albumLoader = new FXMLLoader();
+        albumLoader.setLocation(
+				getClass().getResource("/view/Album.fxml"));
+        AnchorPane albumRoot = (AnchorPane)albumLoader.load();
+        Scene albumScene = new Scene(albumRoot);
+        
+        AlbumController albumController = albumLoader.getController();
+        albumController.setLoginScene(loginScene);
+        albumController.setUserScene(userScene);
+        userController.setSearchScene(albumScene);
+        
         // send admin and user scenes to login controller
         loginController.setAdminScene(adminScene);
         loginController.setUserScene(userScene);
         
         //pass controller parameters to other controllers
         loginController.setUserController(userController);
-        loginController.setAdminController(adminController);
+        //loginController.setAdminController(adminController);
+        userController.setAlbumController(albumController);
+        userController.setSearchController(searchController);
         
         stage.setTitle("Login");
         stage.setScene(loginScene);

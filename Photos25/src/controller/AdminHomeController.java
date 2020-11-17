@@ -157,6 +157,7 @@ public class AdminHomeController {
 	
 	public void openLoginScene(ActionEvent event) {
 		Stage primaryStage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
+		primaryStage.setTitle("Login");
 		primaryStage.setScene(loginScene);
 	}
 	

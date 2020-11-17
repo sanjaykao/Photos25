@@ -7,7 +7,6 @@ import java.util.Optional;
 import javafx.event.*;
 
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -15,13 +14,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.User;
-import model.AdminUser;
 import model.Album;
 import model.Photo;
 
@@ -39,6 +36,9 @@ public class UserHomeController {
 	private Scene loginScene;
 	private Scene albumScene;
 	private Scene searchScene;
+	
+	public AlbumController albumController;
+	public SearchPageController searchController;
 	
 	@FXML
 	private void initialize() {
@@ -148,6 +148,7 @@ public class UserHomeController {
 	
 	public void openLoginScene(ActionEvent event) {
 		Stage primaryStage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
+		primaryStage.setTitle("Login");
 		primaryStage.setScene(loginScene);
 	}
 	
@@ -157,6 +158,7 @@ public class UserHomeController {
 	
 	public void openAlbumScene(ActionEvent event) {
 		Stage primaryStage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
+		primaryStage.setTitle("Album Details");
 		primaryStage.setScene(albumScene);
 	}
 	
@@ -166,7 +168,16 @@ public class UserHomeController {
 	
 	public void openSearchScene(ActionEvent event) {
 		Stage primaryStage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
+		primaryStage.setTitle("Search");
 		primaryStage.setScene(searchScene);
+	}
+	
+	public void setAlbumController(AlbumController controller) {
+		albumController = controller;
+	}
+	
+	public void setSearchController(SearchPageController controller) {
+		searchController = controller;
 	}
 	
 	public void initCurrentUser(User user) {
