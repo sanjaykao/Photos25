@@ -198,7 +198,7 @@ public class UserHomeController {
 				});
 			}else {
 				ArrayList<Photo> photos = album.getPhotos();
-				Image image = photos.get(photos.size() - 1).image;
+				Image image = photos.get(photos.size() - 1).getImage();
 				ImageView imageView = new ImageView(image);
 				Text details = new Text(album.getAlbumName() + "\n" + album.getNumOfPhotos() + "\n" + album.getEarliestDate() + " - " + album.getLatestDate());
 				VBox vbox = new VBox();

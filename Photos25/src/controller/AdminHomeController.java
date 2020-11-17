@@ -39,20 +39,20 @@ public class AdminHomeController {
 	@FXML
 	private void initialize() {		
 		readSerial();
-		
+
 		//create the stock account upon startup
 		stockUser = initStockUser();
 		if(stockUser != null) {
 			//System.out.println("stockUser exists: " + stockUser.getUsername());
 			admin.addUser(stockUser);
 			AdminUser.write(admin);
+			User.write(stockUser, stockUser.getUsername());
 			users = admin.getUsers();
 		} 
-		
 		System.out.println(getList());
 		
 		if(users.size() > 0) {
-			System.out.println("arraylist is not empty");
+			//System.out.println("arraylist is not empty");
 			obsList = FXCollections.observableArrayList();
 	    	obsList = getList();
 
@@ -83,7 +83,7 @@ public class AdminHomeController {
 			if(exists(name)) {
 				setWarning("Cannot add user", "This name is already taken!");
 			}else {
-				File userFile = new File("." + File.separator + name + ".dat");
+				//File userFile = new File("." + File.separator + name + ".dat");
 				admin.addUser(name);
 				AdminUser.write(admin);
 				users = admin.getUsers();
@@ -94,6 +94,7 @@ public class AdminHomeController {
 				listView.setItems(obsList);
 				int ind = getIndex(name);
 				listView.getSelectionModel().select(ind);
+				System.out.println(getList());
 			}
 		}
 	}
@@ -161,7 +162,7 @@ public class AdminHomeController {
 	}
 	
 	public User initStockUser() {
-		File datFile = new File("users.dat");
+		File datFile = new File("./users.dat");
 		
 		//create the stock account
 		if(!datFile.exists() || !datFile.isFile() || !datFile.canRead()) {
@@ -176,12 +177,22 @@ public class AdminHomeController {
 					String picName = stockPhotoFile.getName(); 
 					Calendar date = Calendar.getInstance();
 					Photo newPic = new Photo(picName, pic, date);
+					System.out.print(newPic.getPhotoName() + " ");
 					stockAlbum.addPhotoToAlbum(newPic);
 				}
+				
 			}
+			
+			for(int i = 0; i < stockAlbum.getNumOfPhotos(); i++) {
+				System.out.print(stockAlbum.getPhotos().get(i) + " ");
+			}
+			
+			System.out.println(stockAlbum.getNumOfPhotos());
 			
 			User stockUser = new User("stock");
 			stockUser.addAlbum(stockAlbum);
+			
+			System.out.println(stockUser.getAlbums());
 			return stockUser;
 		}
 		

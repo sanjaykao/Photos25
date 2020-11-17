@@ -9,7 +9,7 @@ public class AdminUser implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public String admin;
+	//public String admin;
 	public ArrayList<User> users;
 	
 	public static final String storeDir = ".";
@@ -17,7 +17,7 @@ public class AdminUser implements Serializable{
 	
 	//idk about this
 	public AdminUser() {
-		admin = "admin";
+		//admin = "admin";
 		users = new ArrayList<User>();
 	}
 	
@@ -50,6 +50,22 @@ public class AdminUser implements Serializable{
 		try {
 			oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + storeFile, false));
 			oos.writeObject(admin);
+			oos.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}
+	}
+	
+	public static void writeStock(User user, String name) {
+		String fileName = name + ".dat";
+		ObjectOutputStream oos;
+		try {
+			oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + fileName, false));
+			oos.writeObject(user);
 			oos.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
