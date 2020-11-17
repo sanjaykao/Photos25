@@ -1,11 +1,14 @@
 package controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Optional;
 
 import javafx.event.*;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -14,9 +17,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.User;
+import model.AdminUser;
 import model.Album;
 import model.Photo;
 
@@ -37,15 +42,11 @@ public class UserHomeController {
 	
 	@FXML
 	private void initialize() {
-		readSerial();
 		selectedAlbum = "";
-		tilePane = new TilePane();
 	}
 	
 	public void start(Stage mainStage) {
-		if(albums.size() > 0) {
-			displayAlbums();
-		}
+		
 	}
 	
 	@FXML
@@ -61,8 +62,9 @@ public class UserHomeController {
 				setWarning("Cannot create album", "This album already exists!");
 			}else {
 				user.createAlbum(name);
-				User.write(user);
-				readSerial();
+				User.write(user, user.getUsername());
+				albums = user.getAlbums();
+				tilePane.getChildren().clear();
 				displayAlbums();	
 			}
 		}
@@ -80,8 +82,10 @@ public class UserHomeController {
     		Optional<ButtonType> result = alert.showAndWait();
     		if(result.get() == ButtonType.OK) {
     			user.deleteAlbum(selectedAlbum);
-    			User.write(user);
-    			readSerial();
+    			User.write(user, user.getUsername());
+    			albums = user.getAlbums();
+    			//readSerial();
+    			tilePane.getChildren().clear();
     			if(albums.size() > 0) {
     				displayAlbums();
     			}
@@ -105,7 +109,7 @@ public class UserHomeController {
 						String name = td.getEditor().getText();
 						//add check to see if new name is same as another album
 						user.renameAlbum(album, name);
-						User.write(user);
+						User.write(user, user.getUsername());
 						readSerial();
 						displayAlbums();
 						break;
@@ -166,19 +170,29 @@ public class UserHomeController {
 	}
 	
 	public void initCurrentUser(User user) {
+		User temp = user;
+		setCurrentUser(temp);
+	}
+	
+	private void setCurrentUser(User user) {
 		this.user = user;
+		readSerial();
+		displayAlbums();
 	}
 	
 	private void displayAlbums() {
 		for(Album album : albums) {
 			if(album.getNumOfPhotos() == 0) {
-				Image image = new Image("/data/shrek.jpeg", 60, 0, false, false);
+				File file = new File("./data/pic7.JPG");
+				Image image = new Image(file.toURI().toString(), 100, 110, false, false);
 				ImageView imageView = new ImageView(image);
+				imageView.setUserData(album);
 				Text details = new Text(album.getAlbumName() + "\n" + album.getNumOfPhotos());
-				StackPane pane = new StackPane();
-				pane.getChildren().add(imageView);
-				pane.getChildren().add(details);
-				tilePane.getChildren().add(pane);
+				VBox vbox = new VBox();
+				vbox.setAlignment(Pos.CENTER);
+				vbox.getChildren().add(imageView);
+				vbox.getChildren().add(details);
+				tilePane.getChildren().add(vbox);
 				imageView.setOnMouseClicked(e -> {
 					selectedAlbum = album.getAlbumName();
 				});
@@ -187,10 +201,11 @@ public class UserHomeController {
 				Image image = photos.get(photos.size() - 1).image;
 				ImageView imageView = new ImageView(image);
 				Text details = new Text(album.getAlbumName() + "\n" + album.getNumOfPhotos() + "\n" + album.getEarliestDate() + " - " + album.getLatestDate());
-				StackPane pane = new StackPane();
-				pane.getChildren().add(imageView);
-				pane.getChildren().add(details);
-				tilePane.getChildren().add(pane);
+				VBox vbox = new VBox();
+				vbox.setAlignment(Pos.CENTER);
+				vbox.getChildren().add(imageView);
+				vbox.getChildren().add(details);
+				tilePane.getChildren().add(vbox);
 				imageView.setOnMouseClicked(e -> {
 					selectedAlbum = album.getAlbumName();
 				});
@@ -199,8 +214,14 @@ public class UserHomeController {
 	}
 	
 	private void readSerial() {
-		user = User.read(user);
-		albums = user.getAlbums();
+		String name = user.getUsername();
+		user = User.read(name);
+		if(user != null) {
+			albums = user.getAlbums();
+		}else {
+			user = new User(name);
+			albums = user.getAlbums();
+		}
 	}
 		
 	private boolean exists(String name) {

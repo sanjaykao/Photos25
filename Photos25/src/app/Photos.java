@@ -37,7 +37,7 @@ public class Photos extends Application {
         Scene adminScene = new Scene(adminRoot);
         
         //get loader and pane for user
-        /*FXMLLoader userLoader = new FXMLLoader();
+        FXMLLoader userLoader = new FXMLLoader();
         userLoader.setLocation(
         		getClass().getResource("/view/UserHome.fxml"));
         
@@ -47,14 +47,14 @@ public class Photos extends Application {
         UserHomeController userController = userLoader.getController();
         userController.setLoginScene(loginScene);
         
-        Scene userScene = new Scene(userRoot);*/
+        Scene userScene = new Scene(userRoot);
         
         // send admin and user scenes to login controller
         loginController.setAdminScene(adminScene);
-        //loginController.setUserScene(userScene);
+        loginController.setUserScene(userScene);
         
         //pass controller parameters to other controllers
-        //loginController.setUserController(userController);
+        loginController.setUserController(userController);
         loginController.setAdminController(adminController);
         
         stage.setTitle("Login");

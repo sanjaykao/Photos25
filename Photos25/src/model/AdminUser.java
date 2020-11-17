@@ -48,7 +48,6 @@ public class AdminUser implements Serializable{
 	public static void write(AdminUser admin) {
 		ObjectOutputStream oos;
 		try {
-			System.out.println(storeDir + File.separator + storeFile);
 			oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + storeFile, false));
 			oos.writeObject(admin);
 			oos.close();

@@ -14,6 +14,7 @@ public class User implements Serializable{
 	public ArrayList<Album> albums;
 	
 	public static final String storeDir = ".";
+	public static String storeFile = "";
 	
 	public User(String username) {
 		this.username = username;
@@ -119,10 +120,11 @@ public class User implements Serializable{
 		return null;
 	}
 	
-	public static void write(User user) {
+	public static void write(User user, String name) {
+		storeFile = name + ".dat";
 		ObjectOutputStream oos;
 		try {
-			oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + user.getUsername() + ".dat", false));
+			oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + storeFile, false));
 			oos.writeObject(user);
 			oos.close();
 		} catch (FileNotFoundException e) {
@@ -134,10 +136,12 @@ public class User implements Serializable{
 		}
 	}
 	
-	public static User read(User user) {
+	public static User read(String name) {
+		storeFile = name + ".dat";
+		System.out.println(storeFile);
 		ObjectInputStream ois;
 		try {
-			ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + user.getUsername() + ".dat"));
+			ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + storeFile));
 			User temp = (User)ois.readObject();
 			ois.close();
 			return temp;

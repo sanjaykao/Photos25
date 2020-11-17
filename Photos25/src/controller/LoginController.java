@@ -5,12 +5,14 @@ import java.util.ArrayList;
 
 import javafx.event.*;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.AdminUser;
 import model.User;
@@ -88,7 +90,7 @@ public class LoginController {
 	}
 	
 	public void openUserScene(ActionEvent event) {
-		Stage primaryStage = (Stage) ((Stage) (event.getSource())).getScene().getWindow();
+		Stage primaryStage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
 		primaryStage.setScene(userScene);
 	}
 	
