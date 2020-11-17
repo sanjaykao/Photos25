@@ -139,14 +139,12 @@ public class User implements Serializable{
 	public static User read(String name) {
 		storeFile = name + ".dat";
 		System.out.println(storeFile);
-		File file = new File(storeDir + File.separator + storeFile);
-		System.out.println(file.exists());
+		//File file = new File(storeDir + File.separator + storeFile);
+		//System.out.println(file.exists());
 		ObjectInputStream ois;
 		try {
 			ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + storeFile));
 			User temp = (User)ois.readObject();
-			System.out.println(temp.getUsername());
-			System.out.println(temp.getAlbums().get(0).getAlbumName());
 			ois.close();
 			return temp;
 		} catch (FileNotFoundException e) {

@@ -43,7 +43,6 @@ public class AdminHomeController {
 		//create the stock account upon startup
 		stockUser = initStockUser();
 		if(stockUser != null) {
-			//System.out.println("stockUser exists: " + stockUser.getUsername());
 			admin.addUser(stockUser);
 			AdminUser.write(admin);
 			User.write(stockUser, stockUser.getUsername());
