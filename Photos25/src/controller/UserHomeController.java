@@ -122,7 +122,17 @@ public class UserHomeController {
 	
 	@FXML
 	private void openAlbum(ActionEvent event) {
-		openAlbumScene(event);
+		if(selectedAlbum.equals("")) {
+			setWarning("No album selected", "Please select an album or add more albums.");
+		}else {
+			for(Album album : albums) {
+				if(album.getAlbumName().equals(selectedAlbum)) {
+					albumController.initCurrentUserAlbum(user, album);
+					break;
+				}
+			}
+			openAlbumScene(event);
+		}
 	}
 	
 	@FXML
@@ -249,6 +259,5 @@ public class UserHomeController {
 		alert.setTitle(title);
 		alert.setContentText(content);
 		alert.showAndWait();
-	}
-	
+	}	
 }

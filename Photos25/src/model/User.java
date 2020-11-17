@@ -12,6 +12,7 @@ public class User implements Serializable{
 	
 	public String username;
 	public ArrayList<Album> albums;
+	public ArrayList<Tag> userTags;
 	
 	public static final String storeDir = ".";
 	public static String storeFile = "";
@@ -19,6 +20,7 @@ public class User implements Serializable{
 	public User(String username) {
 		this.username = username;
 		this.albums = new ArrayList<Album>();
+		this.userTags = new ArrayList<Tag>();
 	}
 	
 	public String getUsername() {
@@ -80,6 +82,17 @@ public class User implements Serializable{
 		ArrayList<Tag> tags = photo.getTags();
 		Tag newTag = new Tag(name, value);
 		tags.add(newTag);
+		addAlbumTag(newTag);
+	}
+	
+	public void addAlbumTag(Tag tag) {
+		// adds tag to user tags arraylist if it doesn't already exist
+		for(Tag item : userTags) {
+			if(item.getName().equals(tag.getName()) && item.getValue().equals(tag.getValue())) {
+				return;
+			}
+		}
+		userTags.add(tag);
 	}
 	
 	public void deleteTag(Photo photo, Tag tag) {
@@ -88,9 +101,31 @@ public class User implements Serializable{
 		for(int i = 0; i < tags.size(); i++) {
 			if(tags.get(i).equals(tag)) {
 				tags.remove(i);
+				deleteUserTag(tags.get(i));
+				break;
 			}
 		}
 		
+	}
+	
+	public void deleteUserTag(Tag tag) {
+		// deletes the tag from the user tags arraylist if no more photos have the tag
+		for(Album album : albums) {
+			ArrayList<Photo> photos = album.getPhotos();
+			for(Photo photo : photos) {
+				ArrayList<Tag> tags = photo.getTags();
+				for(Tag item : tags) {
+					if(item.getName().equals(tag.getName()) && item.getValue().equals(tag.getValue())) {
+						return;
+					}
+				}
+			}
+		}
+		userTags.remove(tag);
+	}
+	
+	public ArrayList<Tag> getAlbumTags(){
+		return userTags;
 	}
 	
 	public void copyPhoto(Album dest, Photo photo) {

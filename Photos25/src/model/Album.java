@@ -34,6 +34,15 @@ public class Album implements Serializable{
 		numOfPhotos++;
 	}
 	
+	public void deletePhoto(String photo) {
+		for(Photo item : photos) {
+			if(item.getPhotoName().equals(photo)) {
+				photos.remove(item);
+				numOfPhotos--;
+			}
+		}
+	}
+	
 	public String getAlbumName() {
 		return albumName;
 	}
