@@ -46,38 +46,29 @@ public class LoginController {
 		//if admin, open adminScene
 		if (user.equals("admin")) {
 			openAdminScene(event);
+		} else if(datFile.exists()){
+			FileInputStream fis = new FileInputStream(datFile);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			AdminUser adminUser = (AdminUser) ois.readObject();
+			users = adminUser.getUsers();
+			ois.close();
+			fis.close();
+				
+			String existingUsername;
+			for(User existingUser : users) {
+				existingUsername = existingUser.getUsername();
+				if(existingUsername.equals(user)) {
+					userController.initCurrentUser(existingUser);
+					openUserScene(event);
+				}
+			}	
+
 		} else {
-			if(datFile.exists()) {
-				boolean exists = false;
-				FileInputStream fis = new FileInputStream(datFile);
-				ObjectInputStream ois = new ObjectInputStream(fis);
-				AdminUser adminUser = (AdminUser) ois.readObject();
-				users = adminUser.getUsers();
-				ois.close();
-				fis.close();
-					
-				String existingUsername;
-				for(User existingUser : users) {
-					existingUsername = existingUser.getUsername();
-					if(existingUsername.equals(user)) {
-						exists = true;
-						userController.initCurrentUser(existingUser);
-						openUserScene(event);
-					}
-				}
-				if(!exists) {
-					Alert alert = new Alert(AlertType.WARNING);
-					alert.setTitle("Error with logging in");
-					alert.setContentText("Username does not exist");
-					alert.showAndWait();
-				}
-			}else {
-				Alert alert = new Alert(AlertType.WARNING);
-				alert.setTitle("Error with logging in");
-				alert.setContentText("Username does not exist");
-				alert.showAndWait();
-			}
-		} 
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Error with logging in");
+			alert.setContentText("Username does not exist");
+			alert.showAndWait();
+		}
 	}
 	
 	public void setAdminScene(Scene scene) {

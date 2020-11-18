@@ -12,7 +12,7 @@
 	xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="controller.AlbumController">
 	<children>
-		<ScrollPane fx:id="scrollPane" layoutX="14.0" layoutY="51.0" prefHeight="398.0" prefWidth="436.0">
+		<ScrollPane fx:id="scrollPane" layoutX="14.0" layoutY="14.0" prefHeight="472.0" prefWidth="436.0">
          <content>
             <TilePane vgap="15" hgap="10" layoutX="24.0" layoutY="24.0" prefHeight="452.0" prefWidth="416.0" fx:id="tilePane">
 				<padding>
@@ -22,21 +22,21 @@
          </content>
       </ScrollPane>
 		
-		<Button layoutX="500" layoutY="90" prefHeight="27.0" prefWidth="150.0" mnemonicParsing="false" text="Add photo" onAction="#addPhoto" fx:id="add" />
-        <Button layoutX="500" layoutY="130" prefHeight="27.0" prefWidth="150.0" mnemonicParsing="false" text="Delete photo" onAction="#deletePhoto" fx:id="delete" />
-        <Button layoutX="500" layoutY="170" prefHeight="27.0" prefWidth="150.0" mnemonicParsing="false" text="Add/edit caption" onAction="#addCap" fx:id="editC" />
-        <Button layoutX="500" layoutY="210" prefHeight="27.0" prefWidth="150.0" mnemonicParsing="false" text="Add tag" onAction="#addTag" fx:id="addT" />
-        <Button layoutX="500" layoutY="250" prefHeight="27.0" prefWidth="150.0" mnemonicParsing="false" text="Delete Tag" onAction="#deleteTag" fx:id="deleteT" />
-        <Button layoutX="500" layoutY="290" prefHeight="27.0" prefWidth="150.0" mnemonicParsing="false" text="Copy photo" onAction="#copyPhoto" fx:id="copy" />
-        <Button layoutX="500" layoutY="330" prefHeight="27.0" prefWidth="150.0" mnemonicParsing="false" text="Move Photo" onAction="#movePhoto" fx:id="move" />
-        <Button layoutX="92" layoutY="459" prefHeight="27.0" prefWidth="100.0" mnemonicParsing="false" text="Preview Photo" onAction="#preview" fx:id="preview" />
-        <Button layoutX="272" layoutY="459" prefHeight="27.0" prefWidth="100.0" mnemonicParsing="false" text="Slideshow" onAction="#slideshow" fx:id="slide" />
+		<Button layoutX="500" layoutY="90" prefHeight="27.0" prefWidth="100.0" mnemonicParsing="false" text="Add photo" onAction="#addPhoto" fx:id="add" />
+        <Button layoutX="500" layoutY="130" prefHeight="27.0" prefWidth="100.0" mnemonicParsing="false" text="Delete photo" onAction="#deletePhoto" fx:id="delete" />
+        <Button layoutX="500" layoutY="170" prefHeight="27.0" prefWidth="100.0" mnemonicParsing="false" text="Add/edit caption" onAction="#addCap" fx:id="editC" />
+        <Button layoutX="500" layoutY="210" prefHeight="27.0" prefWidth="100.0" mnemonicParsing="false" text="Add tag" onAction="#addTag" fx:id="addT" />
+        <Button layoutX="500" layoutY="250" prefHeight="27.0" prefWidth="100.0" mnemonicParsing="false" text="Delete Tag" onAction="#deleteTag" fx:id="deleteT" />
+        <Button layoutX="500" layoutY="290" prefHeight="27.0" prefWidth="100.0" mnemonicParsing="false" text="Copy photo" onAction="#copyPhoto" fx:id="copy" />
+        <Button layoutX="500" layoutY="330" prefHeight="27.0" prefWidth="100.0" mnemonicParsing="false" text="Move Photo" onAction="#movePhoto" fx:id="move" />
+        <Button layoutX="92" layoutY="445" prefHeight="27.0" prefWidth="100.0" mnemonicParsing="false" text="Preview Photo" onAction="#preview" fx:id="preview" />
+        <Button layoutX="272" layoutY="445" prefHeight="27.0" prefWidth="100.0" mnemonicParsing="false" text="Slideshow" onAction="#slideshow" fx:id="slide" />
         <Button layoutX="14" layoutY="14" prefHeight="27.0" prefWidth="100.0" mnemonicParsing="false" text="Back to Home" onAction="#homePage" fx:id="home" />
-		<Button layoutX="1086" layoutY="14.0" prefHeight="27.0" prefWidth="100.0" mnemonicParsing="false" text="Logout" onAction="#logout" fx:id="logout" />
+		<Button layoutX="586" layoutY="14.0" prefHeight="27.0" prefWidth="100.0" mnemonicParsing="false" text="Logout" onAction="#logout" fx:id="logout" />
 		
-		<AnchorPane layoutX="670" layoutY="51" prefHeight="361" prefWidth="500" fx:id="anchorPane2">
+		<AnchorPane layoutX="650" layoutY="14" prefHeight="361" prefWidth="500" fx:id="anchorPane2">
 		</AnchorPane>
-		<TextArea layoutX="750.0" layoutY="385.0" prefHeight="50.0" prefWidth="300.0" fx:id="details">
+		<TextArea layoutX="825.0" layoutY="385.0" prefHeight="50.0" prefWidth="150.0" fx:id="details">
 			<padding>
 				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 			</padding>
