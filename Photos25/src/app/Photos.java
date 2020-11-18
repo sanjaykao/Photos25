@@ -86,6 +86,9 @@ public class Photos extends Application {
         //loginController.setAdminController(adminController);
         userController.setAlbumController(albumController);
         userController.setSearchController(searchController);
+        albumController.setUserController(userController);
+        //might need for search back to user home page
+        //searchController.setUserController(userController);
         
         stage.setTitle("Login");
         stage.setScene(loginScene);

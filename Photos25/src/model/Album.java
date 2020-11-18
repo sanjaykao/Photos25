@@ -11,8 +11,8 @@ public class Album implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	public String albumName;
-	public Date earliestDate;
-	public Date latestDate;
+	public Calendar earliestDate;
+	public Calendar latestDate;
 	public int numOfPhotos;
 	public ArrayList<Photo> photos;
 	
@@ -51,19 +51,19 @@ public class Album implements Serializable{
 		this.albumName = newName;
 	}
 	
-	public Date getEarliestDate() {
+	public Calendar getEarliestDate() {
 		return earliestDate;
 	}
 	
-	public void setEarliestDate(Date newDate) {
+	public void setEarliestDate(Calendar newDate) {
 		this.earliestDate = newDate;
 	}
 	
-	public Date getLatestDate() {
+	public Calendar getLatestDate() {
 		return latestDate;
 	}
 	
-	public void setLatestDate(Date newDate) {
+	public void setLatestDate(Calendar newDate) {
 		this.latestDate = newDate;
 	}
 	
