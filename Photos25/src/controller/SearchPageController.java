@@ -85,6 +85,8 @@ public class SearchPageController {
 		
 		if(albums.size() == 0) {
 			setWarning("No pictures to search", "Please add pictures");
+		} else if(compareType.getValue() == null) { 
+			setWarning("No compare type selected", "Please select a compare type");
 		} else if(tag1.getValue() == null) {
 			setWarning("No valid tags to search", "Please select at least one tag");
 		} else if(compareType.getValue().equals("SINGLE")) {
@@ -238,7 +240,9 @@ public class SearchPageController {
 				Date picDate = currPic.getDate().getTime();
 				//System.out.println(picDate);
 				if(picDate.after(first) && picDate.before(last)) {
-					results.add(currPic);
+					if(!results.contains(currPic)) {
+						results.add(currPic);
+					}
 				}
 			}
 		}
