@@ -82,8 +82,8 @@ public class AlbumController {
 			if(!ext.equals("jpg") && !ext.equals("jpeg") && !ext.equals("gif") && !ext.equals("bmp") && !ext.equals("png")) {
 				setWarning("Can't add photo", "The file you selected is not the right format");
 			}else {
-				File file = new File(path);
-				Image image = new Image(file.toURI().toString(), 100, 0, false, false);
+				//File file = new File(path);
+				//Image image = new Image(file.toURI().toString(), 100, 0, false, false);
 				Calendar date = Calendar.getInstance();
 				boolean photoExists = false;
 				for(Photo photo : photos) {
@@ -95,7 +95,7 @@ public class AlbumController {
 				if(photoExists) {
 					setWarning("Can't add photo", "Photo already exists in this album!");
 				}else {
-					Photo temp = new Photo(path, image, date);
+					Photo temp = new Photo(path, date);
 					album.addPhotoToAlbum(temp);
 					album.findEarliestDate();
 					album.findLatestDate();

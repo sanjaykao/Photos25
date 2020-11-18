@@ -8,7 +8,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import model.AdminUser;
@@ -17,12 +16,9 @@ import model.Photo;
 import model.User;
 
 import java.io.File;
-//import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Optional;
-
-//import app.Photos;
 
 
 public class AdminHomeController {
@@ -171,10 +167,9 @@ public class AdminHomeController {
 				stockPhotoFile = new File("./data/pic" + Integer.toString(i) +".JPG");
 				
 				if(stockPhotoFile != null) {
-					Image pic = new Image(stockPhotoFile.toURI().toString());
 					String picName = stockPhotoFile.getAbsolutePath(); 
 					Calendar date = Calendar.getInstance();
-					Photo newPic = new Photo(picName, pic, date);
+					Photo newPic = new Photo(picName, date);
 					//newPic.setCaption("this is where caption would go");
 					//System.out.print(newPic.getPhotoName() + " ");
 					stockAlbum.addPhotoToAlbum(newPic);
