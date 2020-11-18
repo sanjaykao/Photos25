@@ -151,6 +151,7 @@ public class UserHomeController {
 	
 	@FXML
 	private void searchPhotos(ActionEvent event) {
+		searchController.initCurrentUser(user);
 		openSearchScene(event);
 	}
 	

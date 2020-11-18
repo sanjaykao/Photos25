@@ -144,17 +144,6 @@ public class User implements Serializable{
 		source.getPhotos().remove(photo);
 	}
 	
-	public ArrayList<Photo> searchByDate(Date first, Date last) {
-		//returns a new arraylist (copy of the photos) between first and last dates
-		return null;
-	}
-	
-	public ArrayList<Photo> searchByTag(Tag first, Tag second, String type) {
-		//type : single, and, or
-		//returns a new arraylist(copy of the photos)
-		return null;
-	}
-	
 	public static void write(User user, String name) {
 		storeFile = name + ".dat";
 		ObjectOutputStream oos;
