@@ -34,11 +34,9 @@ public class SearchPageController {
 	@FXML private TilePane tilePane;
 	@FXML private DatePicker firstDate;
 	@FXML private DatePicker secondDate;
-	@FXML private ComboBox<String> name1;
-	@FXML private TextField value1;
+	@FXML private ComboBox<String> tag1;
 	@FXML private ComboBox<String> compareType;
-	@FXML private ComboBox<String> name2;
-	@FXML private TextField value2;
+	@FXML private ComboBox<String> tag2;
 
 	private User user;
 	private ArrayList<Album> albums;
@@ -83,18 +81,16 @@ public class SearchPageController {
 	
 	@FXML
 	private void searchByTagBtn(ActionEvent event) {
-		Tag tag1;
-		Tag tag2;
+		//Tag tag1;
+		//Tag tag2;
 		
 		if(albums.size() == 0) {
 			setWarning("No pictures to search", "Please add pictures");
-		} else if(value1.getText().trim().isEmpty() || value1.getText() == null) {
-			setWarning("Invalid input", "Please give at least one value");
-		} else if(name1.getValue() == null || name2.getValue() == null) {
+		} else if(tag1.getValue() == null || tag2.getValue() == null) {
 			setWarning("No valid tags to search", "Please add tags");
 		} else if(compareType.getValue().equals("SINGLE")) {
-			tag1 = new Tag(name1.getValue(), value1.getText().trim());
-			picResults = searchByTag(tag1, null, compareType.getValue());
+			//tag1 = new Tag(name1.getValue(), value1.getText().trim());
+			picResults = searchByTag(tag1.getValue(), null, compareType.getValue());
 			
 			if(picResults.size() == 0) {
 				setWarning("Empty search result", "There are no photos that fit the search criteria");
@@ -102,9 +98,9 @@ public class SearchPageController {
 				displayResults();
 			}
 		} else {
-			tag1 = new Tag(name1.getValue(), value1.getText().trim());
-			tag2 = new Tag(name2.getValue(), value2.getText().trim());
-			picResults = searchByTag(tag1, tag2, compareType.getValue());
+			//tag1 = new Tag(name1.getValue(), value1.getText().trim());
+			//tag2 = new Tag(name2.getValue(), value2.getText().trim());
+			picResults = searchByTag(tag1.getValue(), tag2.getValue(), compareType.getValue());
 			
 			if(picResults.size() == 0) {
 				setWarning("Empty search result", "There are no photos that fit the search criteria");
@@ -115,7 +111,27 @@ public class SearchPageController {
 	}
 	@FXML
 	private void newSearchAlbum(ActionEvent event) {
+		TextInputDialog td = new TextInputDialog();
+		td.setTitle("Create new album from search results");
+		td.setHeaderText("Enter a name");
+		Optional<String> result = td.showAndWait();
 		
+		if(result.isPresent()) {
+			String name = td.getEditor().getText();
+			if(exists(name)) {
+				setWarning("Cannot create album", "This album already exists!");
+			}else {
+				user.createAlbum(name, picResults);
+				User.write(user, user.getUsername());
+				albums = user.getAlbums();
+				tilePane.getChildren().clear();
+				
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Success!");
+				alert.setContentText("Creating an album from search results was successful");
+				alert.showAndWait();
+			}
+		}
 	}
 	
 	@FXML
@@ -166,13 +182,18 @@ public class SearchPageController {
 			albums = new ArrayList<Album>();
 		}
 		
+		setTagOptions();
+	}
+	
+	private void setTagOptions() {
 		if(tags.size() > 0) {
-			ArrayList<String> names = new ArrayList<String>();
+			ArrayList<String> tagString = new ArrayList<String>();
+			//creates a set of unique names and values
 			for(Tag currTag : tags) {
-				names.add(currTag.getName());
+				tagString.add(currTag.getName() + " = " + currTag.getValue());
 			}
-			name1.getItems().setAll(names);
-			name2.getItems().setAll(names);
+			tag1.getItems().setAll(tagString);
+			tag2.getItems().setAll(tagString);
 		}
 	}
 	
@@ -186,9 +207,6 @@ public class SearchPageController {
 			vbox.getChildren().add(imageView);
 			vbox.getChildren().add(details);
 			tilePane.getChildren().add(vbox);
-			/*imageView.setOnMouseClicked(e -> {
-				selectedAlbum = album.getAlbumName();
-			});*/
 		}
 	}
 	
@@ -210,7 +228,7 @@ public class SearchPageController {
 		return results;
 	}
 	
-	public ArrayList<Photo> searchByTag(Tag first, Tag second, String type) {
+	public ArrayList<Photo> searchByTag(String first, String second, String type) {
 		//type : single, and, or
 		//returns a new arraylist(copy of the photos)
 		ArrayList<Photo> results = new ArrayList<Photo>();
@@ -219,22 +237,25 @@ public class SearchPageController {
 			for(Photo currPic : currAlbum.getPhotos()) {
 				boolean firstTag = false;
 				boolean secondTag = false;
+				//iterate through to see if tags are found 
 				for(Tag currTag : currPic.getTags()) {
+					String toStringTag = currTag.getName() + " = " + currTag.getValue();
 					if(type.equals("SINGLE")) {
-						if(currTag.equals(first)) {
+						if(toStringTag.equals(first)) {
 							firstTag = true;
 							break;
 						}
 					} else {
-						if(currTag.equals(first)) {
+						if(toStringTag.equals(first)) {
 							firstTag = true;
 						} 
-						if(currTag.equals(second)) {
+						if(toStringTag.equals(second)) {
 							secondTag = true;
 						}
 					}
 				}
 				
+				//add photo if conditions are true
 				if(type.equals("SINGLE")) {
 					if(firstTag) {
 						results.add(currPic);
@@ -252,6 +273,15 @@ public class SearchPageController {
 		}
 		
 		return results;
+	}
+	
+	private boolean exists(String name) {
+		for(Album album : albums) {
+			if(album.getAlbumName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private void setWarning(String title, String content) {

@@ -28,11 +28,9 @@
 		      <Button layoutX="500" layoutY="400" prefHeight="27.0" prefWidth="150" mnemonicParsing="false" text="Search by Date" onAction="#searchByDateBtn" fx:id="searchDate" />
 	      </HBox>
 	      <HBox layoutX="14" layoutY="110" spacing="10">
-	      	<ComboBox fx:id="name1" prefWidth="90.0" promptText="name"/>
-	      	<TextField fx:id="value1"/>
+	      	<ComboBox fx:id="tag1" prefWidth="90.0" promptText="tag1"/>
 	      	<ComboBox fx:id="compareType" prefWidth="90.0" promptText="compare"/>
-	      	<ComboBox fx:id="name2" prefWidth="90.0" promptText="name"/>
-	      	<TextField fx:id="value2"/>
+	      	<ComboBox fx:id="tag2" prefWidth="90.0" promptText="tag2"/>
 	      	<Button layoutX="500" layoutY="400" prefHeight="27.0" prefWidth="150" mnemonicParsing="false" text="Search by Tag" onAction="#searchByTagBtn" fx:id="searchTag" />
 	      </HBox>
       	<Button layoutX="685" layoutY="460" prefHeight="27.0" prefWidth="150" mnemonicParsing="false" text="Create new album" onAction="#newSearchAlbum" fx:id="newSearchAlbum" />
