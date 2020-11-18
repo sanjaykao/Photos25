@@ -86,8 +86,6 @@ public class AdminHomeController {
 				admin.addUser(name);
 				AdminUser.write(admin);
 				users = admin.getUsers();
-				//readSerial(); 
-				//commented out because list disappears when adding new user after stock 
 				
 				obsList = getList();
 				listView.setItems(obsList);
@@ -128,7 +126,6 @@ public class AdminHomeController {
     				AdminUser.write(admin);
     				users = admin.getUsers();
     			}
-    			//readSerial();
     			
     			obsList = getList();
             	listView.setItems(obsList);
