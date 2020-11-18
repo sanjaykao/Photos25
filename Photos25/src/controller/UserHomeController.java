@@ -52,6 +52,9 @@ public class UserHomeController {
 	
 	@FXML
 	private void createAlbum(ActionEvent event) {
+		if(!selectedAlbum.equals("")) {
+			selectedAlbum = "";
+		}
 		TextInputDialog td = new TextInputDialog();
 		td.setTitle("Create new album");
 		td.setHeaderText("Enter a name");
@@ -65,6 +68,7 @@ public class UserHomeController {
 				user.createAlbum(name);
 				User.write(user, user.getUsername());
 				albums = user.getAlbums();
+				System.out.println(albums.get(1));
 				tilePane.getChildren().clear();
 				displayAlbums();	
 			}
@@ -91,6 +95,7 @@ public class UserHomeController {
     				displayAlbums();
     			}
     		}
+    		selectedAlbum = "";
 		}
 	}
 	
@@ -132,6 +137,7 @@ public class UserHomeController {
 					break;
 				}
 			}
+			selectedAlbum = "";
 		}
 	}
 	
@@ -207,11 +213,13 @@ public class UserHomeController {
 	}
 	
 	public void initCurrentUser(User user) {
-		User temp = user;
-		setCurrentUser(temp);
+		this.user = user;
+		readSerial();
+		tilePane.getChildren().clear();
+		displayAlbums();
 	}
 	
-	private void setCurrentUser(User user) {
+	public void initCurrentUser2(User user) {
 		this.user = user;
 		albums = user.getAlbums();
 		tilePane.getChildren().clear();
@@ -225,7 +233,7 @@ public class UserHomeController {
 				Image image = new Image(file.toURI().toString(), 150, 110, false, false);
 				ImageView imageView = new ImageView(image);
 				imageView.setUserData(album);
-				Text details = new Text(album.getAlbumName() + "\n  " + album.getNumOfPhotos());
+				Text details = new Text(album.getAlbumName() + "\n  " + album.getNumOfPhotos() + "\n");
 				VBox vbox = new VBox();
 				vbox.setAlignment(Pos.CENTER);
 				vbox.getChildren().add(imageView);

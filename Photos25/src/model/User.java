@@ -100,28 +100,36 @@ public class User implements Serializable{
 		ArrayList<Tag> tags = photo.getTags();
 		for(int i = 0; i < tags.size(); i++) {
 			if(tags.get(i).getName().equals(name) && tags.get(i).getValue().equals(value)) {
-				deleteUserTag(tags.get(i));
+				String temp = tags.get(i).getName() + ":" + tags.get(i).getValue();
 				tags.remove(i);
+				deleteUserTag(temp);
 				break;
 			}
 		}
 		
 	}
 	
-	public void deleteUserTag(Tag tag) {
+	public void deleteUserTag(String tag) {
 		// deletes the tag from the user tags arraylist if no more photos have the tag
+		String name = tag.substring(0, tag.indexOf(':'));
+		String value = tag.substring(tag.indexOf(':') + 1);
 		for(Album album : albums) {
 			ArrayList<Photo> photos = album.getPhotos();
 			for(Photo photo : photos) {
 				ArrayList<Tag> tags = photo.getTags();
 				for(Tag item : tags) {
-					if(item.getName().equals(tag.getName()) && item.getValue().equals(tag.getValue())) {
+					if(item.getName().equals(name) && item.getValue().equals(value)) {
 						return;
 					}
 				}
 			}
 		}
-		userTags.remove(tag);
+		for(Tag uTag : userTags) {
+			if(uTag.getName().equals(name) && uTag.getValue().equals(value)) {
+				userTags.remove(uTag);
+				break;
+			}
+		}
 	}
 	
 	public ArrayList<Tag> getAlbumTags(){

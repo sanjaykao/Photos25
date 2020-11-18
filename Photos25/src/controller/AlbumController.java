@@ -285,27 +285,32 @@ public class AlbumController {
 					break;
 				}
 			}
-			ArrayList<String> tags = new ArrayList<String>();
-			for(Tag item : temp) {
-				tags.add(item.getName() + ":" + item.getValue());
-			}
-			ChoiceDialog<String> cd = new ChoiceDialog<String>(tags.get(0), tags);
-			cd.setHeaderText("Delete a tag from photo: " + selectedPhoto);
-			cd.setContentText("Select a tag: ");
-			Optional<String> result = cd.showAndWait();
-			if(result.isPresent()) {
-				String selected = cd.getSelectedItem();
-				String name = selected.substring(0, selected.indexOf(':'));
-				String value = selected.substring(selected.indexOf(':') + 1);
-				for(Photo photo : photos) {
-					if(photo.getPhotoName().equals(selectedPhoto)) {
-						user.deleteTag(photo, name, value);
-						User.write(user, user.getUsername());
-						photos = album.getPhotos();
-						if(photos.size() > 0) {
-							displayPhotos();
+			if(temp.size() == 0) {
+				setWarning("Can't delete tag", "This photo has no tags");
+			}else {
+				ArrayList<String> tags = new ArrayList<String>();
+				for(Tag item : temp) {
+					tags.add(item.getName() + ":" + item.getValue());
+				}
+				ChoiceDialog<String> cd = new ChoiceDialog<String>(tags.get(0), tags);
+				cd.setHeaderText("Delete a tag from photo: " + selectedPhoto);
+				cd.setContentText("Select a tag: ");
+				Optional<String> result = cd.showAndWait();
+				if(result.isPresent()) {
+					String selected = cd.getSelectedItem();
+					String name = selected.substring(0, selected.indexOf(':'));
+					String value = selected.substring(selected.indexOf(':') + 1);
+					for(Photo photo : photos) {
+						if(photo.getPhotoName().equals(selectedPhoto)) {
+							user.deleteTag(photo, name, value);
+							User.write(user, user.getUsername());
+							photos = album.getPhotos();
+							tilePane.getChildren().clear();
+							if(photos.size() > 0) {
+								displayPhotos();
+							}
+							break;
 						}
-						break;
 					}
 				}
 			}
@@ -447,7 +452,7 @@ public class AlbumController {
 			for(Photo photo : photos) {
 				if(photo.getPhotoName().equals(selectedPhoto)) {
 					File file = new File(photo.getPhotoName());
-					Image image = new Image(file.toURI().toString(), 480, 361, false, false);
+					Image image = new Image(file.toURI().toString(), 430, 324, false, false);
 					ImageView imageView = new ImageView(image);
 					anchorPane2.getChildren().add(imageView);
 					Calendar date = photo.getDate();
@@ -461,7 +466,7 @@ public class AlbumController {
 							tags += temp.get(i).getName() + ":" + temp.get(i).getValue() + ", ";
 						}
 					}
-					String content = photo.getCaption() + "\n" + dateFormat.format(date.getTime()) + "\n" + tags;
+					String content = "Caption: " + photo.getCaption() + "\n" + "Date added: " + dateFormat.format(date.getTime()) + "\n" + "Tags: " + tags;
 					details.setText(content);
 					selectedPhoto = "";
 					break;
@@ -487,7 +492,7 @@ public class AlbumController {
 			details.clear();
 			anchorPane2.getChildren().clear();
 			File file = new File(photos.get(index).getPhotoName());
-			Image image = new Image(file.toURI().toString(), 480, 351, false, false);
+			Image image = new Image(file.toURI().toString(), 430, 324, false, false);
 			ImageView imageView = new ImageView(image);
 			anchorPane2.getChildren().add(imageView);
 			Calendar date = photos.get(index).getDate();
@@ -501,14 +506,14 @@ public class AlbumController {
 					tags += temp.get(i).getName() + ":" + temp.get(i).getValue() + ", ";
 				}
 			}
-			String content = photos.get(index).getCaption() + "\n" + dateFormat.format(date.getTime()) + "\n" + tags;
+			String content = "Caption: " + photos.get(index).getCaption() + "\n" + "Date added: " + dateFormat.format(date.getTime()) + "\n" + "Tags: " + tags;
 			details.setText(content);
 		}
 	}
 	
 	@FXML
 	private void homePage(ActionEvent event) {
-		userController.initCurrentUser(user);
+		userController.initCurrentUser2(user);
 		openUserScene(event);
 	}
 	
@@ -543,7 +548,7 @@ public class AlbumController {
 				index--;
 			}
 			File file = new File(photos.get(index).getPhotoName());
-			Image image = new Image(file.toURI().toString(), 480, 351, false, false);
+			Image image = new Image(file.toURI().toString(), 430, 324, false, false);
 			ImageView imageView = new ImageView(image);
 			anchorPane2.getChildren().add(imageView);
 			Calendar date = photos.get(index).getDate();
@@ -557,7 +562,7 @@ public class AlbumController {
 					tags += temp.get(i).getName() + ":" + temp.get(i).getValue() + ", ";
 				}
 			}
-			String content = photos.get(index).getCaption() + "\n" + dateFormat.format(date.getTime()) + "\n" + tags;
+			String content = "Caption: " + photos.get(index).getCaption() + "\n" + "Date added: " + dateFormat.format(date.getTime()) + "\n" + "Tags: " + tags;
 			details.setText(content);
 		}
 	}
@@ -578,7 +583,7 @@ public class AlbumController {
 				index++;
 			}
 			File file = new File(photos.get(index).getPhotoName());
-			Image image = new Image(file.toURI().toString(), 480, 351, false, false);
+			Image image = new Image(file.toURI().toString(), 430, 324, false, false);
 			ImageView imageView = new ImageView(image);
 			anchorPane2.getChildren().add(imageView);
 			Calendar date = photos.get(index).getDate();
@@ -592,7 +597,7 @@ public class AlbumController {
 					tags += temp.get(i).getName() + ":" + temp.get(i).getValue() + ", ";
 				}
 			}
-			String content = photos.get(index).getCaption() + "\n" + dateFormat.format(date.getTime()) + "\n" + tags;
+			String content = "Caption: " + photos.get(index).getCaption() + "\n" + "Date added: " + dateFormat.format(date.getTime()) + "\n" + "Tags: " + tags;
 			details.setText(content);
 		}
 	}
@@ -622,12 +627,6 @@ public class AlbumController {
 	}
 	
 	public void initCurrentUserAlbum(User user, Album album) {
-		User temp = user;
-		Album temp1 = album;
-		setCurrentUserAlbum(temp, temp1);
-	}
-	
-	private void setCurrentUserAlbum(User user, Album album) {
 		this.user = user;
 		this.album = album;
 		photos = album.getPhotos();
@@ -639,7 +638,9 @@ public class AlbumController {
 	
 	private void displayPhotos() {
 		for(Photo photo : photos) {
-			Image image = photo.getImage();
+			//Image image = photo.getImage();
+			File file = new File(photo.getPhotoName());
+			Image image = new Image(file.toURI().toString(), 150, 110, false, false);
 			ImageView imageView = new ImageView(image);
 			imageView.setUserData(photo);
 			Text cap = new Text(photo.getCaption());
@@ -656,7 +657,7 @@ public class AlbumController {
 	
 	private void setWarning(String title, String content) {
 		Alert alert = new Alert(AlertType.WARNING);
-		alert.setTitle(title);
+		alert.setHeaderText(title);
 		alert.setContentText(content);
 		alert.showAndWait();
 	}
