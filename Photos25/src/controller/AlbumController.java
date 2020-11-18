@@ -27,7 +27,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Optional;
 
-import app.Photos;
+//import app.Photos;
 
 
 public class AlbumController {
@@ -37,10 +37,21 @@ public class AlbumController {
 	@FXML
 	private AnchorPane anchorPane;
 	
+	@FXML 
+	private AnchorPane anchorPane2;
+	
+	@FXML
+	private ImageView iV;
+	
+	@FXML
+	private TextArea details;
+	
 	private ArrayList<Photo> photos;
 	private String selectedPhoto;
 	private User user;
 	private Album album;
+	private boolean slideClicked;
+	private int index;
 
 	private Scene userScene;
 	private Scene loginScene;
@@ -50,6 +61,8 @@ public class AlbumController {
 	@FXML
 	private void initialize() {
 		selectedPhoto = "";
+		slideClicked = false;
+		index = 0;
 	}
 	
 	public void start(Stage mainStage) {
@@ -58,6 +71,12 @@ public class AlbumController {
 	
 	@FXML
 	private void addPhoto(ActionEvent event) {
+		if(!selectedPhoto.equals("")) {
+			selectedPhoto = "";
+		}
+		if(slideClicked) {
+			slideClicked = false;
+		}
 		Stage stage = (Stage)anchorPane.getScene().getWindow();
 		FileChooser fileChooser = new FileChooser();
 		File selected = fileChooser.showOpenDialog(stage);
@@ -87,6 +106,9 @@ public class AlbumController {
 	
 	@FXML
 	private void deletePhoto(ActionEvent event) {
+		if(slideClicked) {
+			slideClicked = false;
+		}
 		if(selectedPhoto.equals("")) {
 			setWarning("No photo selected", "Please select a photo or add more photos.");
 		}else {
@@ -104,11 +126,15 @@ public class AlbumController {
     				displayPhotos();
     			}
     		}
+    		selectedPhoto = "";
 		}
 	}
 	
 	@FXML
 	private void addCap(ActionEvent event) {
+		if(slideClicked) {
+			slideClicked = false;
+		}
 		if(selectedPhoto.equals("")) {
 			setWarning("No photo selected", "Please select a photo or add more photos.");
 		}else {
@@ -144,11 +170,15 @@ public class AlbumController {
     				}
     			}
     		}
+    		selectedPhoto = "";
 		}
 	}
 	
 	@FXML
 	private void addTag(ActionEvent event) {
+		if(slideClicked) {
+			slideClicked = false;
+		}
 		if(selectedPhoto.equals("")) {
 			setWarning("No photo selected", "Please select a photo or add more photos.");
 		}else {
@@ -235,11 +265,15 @@ public class AlbumController {
 					}
 				}
 			}
+			selectedPhoto = "";
 		}
 	}
 	
 	@FXML
 	private void deleteTag(ActionEvent event) {
+		if(slideClicked) {
+			slideClicked = false;
+		}
 		if(selectedPhoto.equals("")) {
 			setWarning("No photo selected", "Please select a photo or add more photos.");
 		}else {
@@ -274,11 +308,15 @@ public class AlbumController {
 					}
 				}
 			}
+			selectedPhoto = "";
 		} 
 	}
 	
 	@FXML
 	private void copyPhoto(ActionEvent event) {
+		if(slideClicked) {
+			slideClicked = false;
+		}
 		if(selectedPhoto.equals("")) {
 			setWarning("No photo selected", "Please select a photo or add more photos.");
 		}else if(user.getAlbums().size() == 1){
@@ -301,30 +339,39 @@ public class AlbumController {
 				String name = cd.getSelectedItem();
 				for(Album item2 : temp) {
 					if(item2.getAlbumName().equals(name)) {
+						boolean exists = false;
 						ArrayList<Photo> destPhotos = item2.getPhotos();
 						for(Photo pic : destPhotos) {
 							if(pic.getPhotoName().equals(selectedPhoto)) {
-								setWarning("Can't copy photo", "Photo already exists in destination album!");
+								exists = true;
 								break;
 							}
 						}
-						for(Photo photo : photos) {
-							if(photo.getPhotoName().equals(selectedPhoto)) {
-								user.copyPhoto(item2, photo);
-								User.write(user, user.getUsername());
-								setWarning("Success!", "Photo copied successfully");
-								break;
+						if(exists) {
+							setWarning("Can't copy photo", "Photo already exists in destination album!");
+						}else {
+							for(Photo photo : photos) {
+								if(photo.getPhotoName().equals(selectedPhoto)) {
+									user.copyPhoto(item2, photo);
+									User.write(user, user.getUsername());
+									setWarning("Success!", "Photo copied successfully");
+									break;
+								}
 							}
 						}
 						break;
 					}
 				}
 			}
+			selectedPhoto = "";
 		}
 	}
 	
 	@FXML
 	private void movePhoto(ActionEvent event) {
+		if(slideClicked) {
+			slideClicked = false;
+		}
 		if(selectedPhoto.equals("")) {
 			setWarning("No photo selected", "Please select a photo or add more photos.");
 		}else if(user.getAlbums().size() == 1){
@@ -347,57 +394,109 @@ public class AlbumController {
 				String name = cd.getSelectedItem();
 				for(Album item2 : temp) {
 					if(item2.getAlbumName().equals(name)) {
+						boolean exists = false;
 						ArrayList<Photo> destPhotos = item2.getPhotos();
 						for(Photo pic : destPhotos) {
 							if(pic.getPhotoName().equals(selectedPhoto)) {
-								setWarning("Can't move photo", "Photo already exists in destination album!");
+								exists = true;
 								break;
 							}
 						}
-						for(Photo photo : photos) {
-							if(photo.getPhotoName().equals(selectedPhoto)) {
-								user.movePhoto(item2, album, photo);
-								User.write(user, user.getUsername());
-								photos = album.getPhotos();
-								tilePane.getChildren().clear();
-								if(photos.size() > 0) {
-									displayPhotos();
+						if(exists) {
+							setWarning("Can't move photo", "Photo already exists in destination album!");
+						}else {
+							for(Photo photo : photos) {
+								if(photo.getPhotoName().equals(selectedPhoto)) {
+									user.movePhoto(item2, album, photo);
+									User.write(user, user.getUsername());
+									photos = album.getPhotos();
+									tilePane.getChildren().clear();
+									if(photos.size() > 0) {
+										displayPhotos();
+									}
+									setWarning("Success!", "Photo moved successfully");
+									break;
 								}
-								setWarning("Success!", "Photo moved successfully");
-								break;
 							}
 						}
 						break;
 					}
 				}
 			}
+			selectedPhoto = "";
 		}
 	}
 	
 	@FXML
 	private void preview(ActionEvent event) {
+		if(slideClicked) {
+			slideClicked = false;
+		}
 		if(selectedPhoto.equals("")) {
 			setWarning("No photo selected", "Please select a photo or add more photos.");
 		}else {
+			details.clear();
+			iV.setImage(null);
+			System.gc();
 			for(Photo photo : photos) {
 				if(photo.getPhotoName().equals(selectedPhoto)) {
-					Alert alert = new Alert(AlertType.INFORMATION);
-					alert.setTitle(selectedPhoto);
-					ImageView imageView = new ImageView(photo.getImage());
-					alert.setGraphic(imageView);
+					File file = new File(photo.getPhotoName());
+					Image image = new Image(file.toURI().toString(), 480, 351, false, false);
+					iV.setImage(image);
 					Calendar date = photo.getDate();
 					DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm");
-					ArrayList<Tag> tags = photo.getTags();
-					alert.setContentText(photo.getCaption() + "\n" + dateFormat.format(date) + "\n");
-					alert.showAndWait();
+					ArrayList<Tag> temp = photo.getTags();
+					String tags = "";
+					for(int i = 0; i < temp.size(); i++) {
+						if(i == temp.size() - 1) {
+							tags += temp.get(i).getName() + ":" + temp.get(i).getValue();
+						}else {
+							tags += temp.get(i).getName() + ":" + temp.get(i).getValue() + ", ";
+						}
+					}
+					String content = selectedPhoto + "\n" + dateFormat.format(date) + "\n" + tags;
+					details.setText(content);
+					selectedPhoto = "";
+					break;
 				}
 			}
+			selectedPhoto = "";
 		}
 	}
 	
 	@FXML
 	private void slideshow(ActionEvent event) {
-		
+		if(!selectedPhoto.equals("")) {
+			selectedPhoto = "";
+		}
+		if(slideClicked) {
+			index = 0;
+		}else {
+			slideClicked = true;
+		}
+		if(photos.size() == 0) {
+			setWarning("Can't open slideshow", "No photos to display, please add more photos");
+		}else {
+			details.clear();
+			iV.setImage(null);
+			System.gc();
+			File file = new File(photos.get(index).getPhotoName());
+			Image image = new Image(file.toURI().toString(), 480, 351, false, false);
+			iV.setImage(image);
+			Calendar date = photos.get(index).getDate();
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm");
+			ArrayList<Tag> temp = photos.get(index).getTags();
+			String tags = "";
+			for(int i = 0; i < temp.size(); i++) {
+				if(i == temp.size() - 1) {
+					tags += temp.get(i).getName() + ":" + temp.get(i).getValue();
+				}else {
+					tags += temp.get(i).getName() + ":" + temp.get(i).getValue() + ", ";
+				}
+			}
+			String content = selectedPhoto + "\n" + dateFormat.format(date) + "\n" + tags;
+			details.setText(content);
+		}
 	}
 	
 	@FXML
@@ -408,6 +507,9 @@ public class AlbumController {
 	
 	@FXML
 	private void logout(ActionEvent event) {
+		if(!selectedPhoto.equals("")) {
+			selectedPhoto = "";
+		}
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirm logout");
 		alert.setContentText("Are you sure you want to logout?");
@@ -415,6 +517,76 @@ public class AlbumController {
 		Optional<ButtonType> result = alert.showAndWait();
 		if(result.get() == ButtonType.OK) {
 			openLoginScene(event);
+		}
+	}
+	
+	@FXML
+	private void previousPhoto(ActionEvent event) {
+		if(!selectedPhoto.equals("")) {
+			selectedPhoto = "";
+		}
+		if(!slideClicked) {
+			setWarning("Warning", "Slideshow hasn't been open yet");
+		}else {
+			details.clear();
+			iV.setImage(null);
+			System.gc();
+			if(index == 0) {
+				index = photos.size() - 1;
+			}else {
+				index--;
+			}
+			File file = new File(photos.get(index).getPhotoName());
+			Image image = new Image(file.toURI().toString(), 480, 351, false, false);
+			iV.setImage(image);
+			Calendar date = photos.get(index).getDate();
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm");
+			ArrayList<Tag> temp = photos.get(index).getTags();
+			String tags = "";
+			for(int i = 0; i < temp.size(); i++) {
+				if(i == temp.size() - 1) {
+					tags += temp.get(i).getName() + ":" + temp.get(i).getValue();
+				}else {
+					tags += temp.get(i).getName() + ":" + temp.get(i).getValue() + ", ";
+				}
+			}
+			String content = selectedPhoto + "\n" + dateFormat.format(date) + "\n" + tags;
+			details.setText(content);
+		}
+	}
+	
+	@FXML
+	private void nextPhoto(ActionEvent event) {
+		if(!selectedPhoto.equals("")) {
+			selectedPhoto = "";
+		}
+		if(!slideClicked) {
+			setWarning("Warning", "Slideshow hasn't been open yet");
+		}else {
+			details.clear();
+			iV.setImage(null);
+			System.gc();
+			if(index == photos.size() - 1) {
+				index = 0;
+			}else {
+				index++;
+			}
+			File file = new File(photos.get(index).getPhotoName());
+			Image image = new Image(file.toURI().toString(), 480, 351, false, false);
+			iV.setImage(image);
+			Calendar date = photos.get(index).getDate();
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm");
+			ArrayList<Tag> temp = photos.get(index).getTags();
+			String tags = "";
+			for(int i = 0; i < temp.size(); i++) {
+				if(i == temp.size() - 1) {
+					tags += temp.get(i).getName() + ":" + temp.get(i).getValue();
+				}else {
+					tags += temp.get(i).getName() + ":" + temp.get(i).getValue() + ", ";
+				}
+			}
+			String content = selectedPhoto + "\n" + dateFormat.format(date) + "\n" + tags;
+			details.setText(content);
 		}
 	}
 	
@@ -459,11 +631,11 @@ public class AlbumController {
 			Image image = photo.getImage();
 			ImageView imageView = new ImageView(image);
 			imageView.setUserData(photo);
-			Text details = new Text(photo.getCaption());
+			Text cap = new Text(photo.getCaption());
 			VBox vbox = new VBox();
 			vbox.setAlignment(Pos.CENTER);
 			vbox.getChildren().add(imageView);
-			vbox.getChildren().add(details);
+			vbox.getChildren().add(cap);
 			tilePane.getChildren().add(vbox);
 			imageView.setOnMouseClicked(e -> {
 				selectedPhoto = photo.getPhotoName();
