@@ -17,13 +17,10 @@ public class Photo implements Serializable{
 	public Calendar date;
 	public ArrayList<Tag> tags;
 	public ArrayList<Album> albums;
-	
-	//NEED TO FIGURE OUT HOW TO IMPORT AN IMAGE
-	
+		
 	public Photo(String name, Image image, Calendar date) {
 		this.photoName = name;
 		this.caption = "";
-		this.image = image;
 		this.date = date;
 		date.set(Calendar.MILLISECOND, 0);
 		this.tags = new ArrayList<Tag>();

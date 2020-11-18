@@ -7,14 +7,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane prefHeight="500" prefWidth="850"
+<AnchorPane prefHeight="500" prefWidth="700"
 	xmlns="http://javafx.com/javafx/8"
 	xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="controller.SearchPageController">
 	<children>
-		<ScrollPane fx:id="scrollPane" layoutX="14.0" layoutY="150" prefHeight="300" prefWidth="820">
+		<ScrollPane fx:id="scrollPane" layoutX="14.0" layoutY="150" prefHeight="300" prefWidth="670">
          <content>
-            <TilePane vgap="15" hgap="10" layoutX="24.0" layoutY="24.0" prefHeight="280" prefWidth="800" fx:id="tilePane">
+            <TilePane vgap="15" hgap="10" layoutX="24.0" layoutY="24.0" prefHeight="280" prefWidth="650" fx:id="tilePane">
 				<padding>
             		<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          		</padding>
@@ -27,14 +27,14 @@
 		      <DatePicker fx:id="secondDate"/>
 		      <Button layoutX="500" layoutY="400" prefHeight="27.0" prefWidth="150" mnemonicParsing="false" text="Search by Date" onAction="#searchByDateBtn" fx:id="searchDate" />
 	      </HBox>
-	      <HBox layoutX="14" layoutY="110" spacing="10">
-	      	<ComboBox fx:id="tag1" prefWidth="90.0" promptText="tag1"/>
-	      	<ComboBox fx:id="compareType" prefWidth="90.0" promptText="compare"/>
-	      	<ComboBox fx:id="tag2" prefWidth="90.0" promptText="tag2"/>
+	      <HBox layoutX="14" layoutY="100" spacing="10">
+	      	<ComboBox fx:id="tag1" prefWidth="120" promptText="tag1"/>
+	      	<ComboBox fx:id="compareType" prefWidth="120" promptText="compare"/>
+	      	<ComboBox fx:id="tag2" prefWidth="120" promptText="tag2"/>
 	      	<Button layoutX="500" layoutY="400" prefHeight="27.0" prefWidth="150" mnemonicParsing="false" text="Search by Tag" onAction="#searchByTagBtn" fx:id="searchTag" />
 	      </HBox>
-      	<Button layoutX="685" layoutY="460" prefHeight="27.0" prefWidth="150" mnemonicParsing="false" text="Create new album" onAction="#newSearchAlbum" fx:id="newSearchAlbum" />
+      	<Button layoutX="535" layoutY="460" prefHeight="27.0" prefWidth="150" mnemonicParsing="false" text="Create new album" onAction="#newSearchAlbum" fx:id="newSearchAlbum" />
 		<Button layoutX="14" layoutY="14" prefHeight="27.0" prefWidth="100.0" mnemonicParsing="false" text="Back to Home" onAction="#homePage" fx:id="home" />
-		<Button layoutX="736" layoutY="14.0" prefHeight="27.0" prefWidth="100.0" mnemonicParsing="false" text="Logout" onAction="#logout" fx:id="logout" />
+		<Button layoutX="586" layoutY="14.0" prefHeight="27.0" prefWidth="100.0" mnemonicParsing="false" text="Logout" onAction="#logout" fx:id="logout" />
 	</children>
 </AnchorPane>

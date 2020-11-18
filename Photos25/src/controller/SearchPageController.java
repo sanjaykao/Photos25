@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
-import app.Photos;
-
 
 public class SearchPageController {
 
@@ -46,6 +44,7 @@ public class SearchPageController {
 	private Scene userScene;
 	private Scene loginScene;
 	
+	public UserHomeController userController;
 	@FXML
 	private void initialize() {
 		compareType.getItems().setAll("SINGLE", "AND", "OR");
@@ -86,8 +85,8 @@ public class SearchPageController {
 		
 		if(albums.size() == 0) {
 			setWarning("No pictures to search", "Please add pictures");
-		} else if(tag1.getValue() == null || tag2.getValue() == null) {
-			setWarning("No valid tags to search", "Please add tags");
+		} else if(tag1.getValue() == null) {
+			setWarning("No valid tags to search", "Please select at least one tag");
 		} else if(compareType.getValue().equals("SINGLE")) {
 			//tag1 = new Tag(name1.getValue(), value1.getText().trim());
 			picResults = searchByTag(tag1.getValue(), null, compareType.getValue());
@@ -97,6 +96,9 @@ public class SearchPageController {
 			} else {
 				displayResults();
 			}
+		} else if(tag2.getValue() == null) {
+			setWarning("Invalid input", "Please choose a second tag for AND/OR comparisons");
+
 		} else {
 			//tag1 = new Tag(name1.getValue(), value1.getText().trim());
 			//tag2 = new Tag(name2.getValue(), value2.getText().trim());
@@ -111,31 +113,39 @@ public class SearchPageController {
 	}
 	@FXML
 	private void newSearchAlbum(ActionEvent event) {
-		TextInputDialog td = new TextInputDialog();
-		td.setTitle("Create new album from search results");
-		td.setHeaderText("Enter a name");
-		Optional<String> result = td.showAndWait();
-		
-		if(result.isPresent()) {
-			String name = td.getEditor().getText();
-			if(exists(name)) {
-				setWarning("Cannot create album", "This album already exists!");
-			}else {
-				user.createAlbum(name, picResults);
-				User.write(user, user.getUsername());
-				albums = user.getAlbums();
-				tilePane.getChildren().clear();
-				
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("Success!");
-				alert.setContentText("Creating an album from search results was successful");
-				alert.showAndWait();
+		if(picResults == null || picResults.size() == 0) {
+			setWarning("Cannot create album", "There are no pictures to create album with");
+		} else {
+			TextInputDialog td = new TextInputDialog();
+			td.setTitle("Create new album from search results");
+			td.setHeaderText("Enter a name");
+			Optional<String> result = td.showAndWait();
+			
+			if(result.isPresent()) {
+				String name = td.getEditor().getText();
+				if(exists(name)) {
+					setWarning("Cannot create album", "This album already exists!");
+				}else {
+					Album alb = new Album(name, picResults);
+					user.addAlbum(alb);
+					alb.findEarliestDate();
+					alb.findLatestDate();
+					User.write(user, user.getUsername());
+					albums = user.getAlbums();
+					tilePane.getChildren().clear();
+					
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle("Success!");
+					alert.setContentText("Creating an album from search results was successful");
+					alert.showAndWait();
+				}
 			}
 		}
 	}
 	
 	@FXML
 	private void homePage(ActionEvent event) {
+		userController.initCurrentUser2(user);
 		openUserScene(event);
 	}
 	
@@ -171,6 +181,10 @@ public class SearchPageController {
 		primaryStage.setScene(userScene);
 	}
 	
+	public void setUserController(UserHomeController controller) {
+		userController = controller;
+	}
+	
 	public void initCurrentUser(User user) {
 		this.user = user;
 		albums = user.getAlbums();
@@ -178,6 +192,7 @@ public class SearchPageController {
 		
 		if(tags == null) {
 			tags = new ArrayList<Tag>();
+
 		} else if(albums == null) {
 			albums = new ArrayList<Album>();
 		}
@@ -192,14 +207,17 @@ public class SearchPageController {
 			for(Tag currTag : tags) {
 				tagString.add(currTag.getName() + " = " + currTag.getValue());
 			}
+
 			tag1.getItems().setAll(tagString);
 			tag2.getItems().setAll(tagString);
 		}
 	}
 	
 	private void displayResults() {
+		tilePane.getChildren().clear();
 		for(Photo pic : picResults) {
-			Image image = pic.getImage();
+			File file = new File(pic.getPhotoName());
+			Image image = new Image(file.toURI().toString(), 150, 110, false, false);
 			ImageView imageView = new ImageView(image);
 			Text details = new Text(pic.getCaption());
 			VBox vbox = new VBox();
@@ -255,18 +273,21 @@ public class SearchPageController {
 					}
 				}
 				
-				//add photo if conditions are true
-				if(type.equals("SINGLE")) {
-					if(firstTag) {
-						results.add(currPic);
-					}
-				} else if(type.equals("AND")) {
-					if(firstTag && secondTag) {
-						results.add(currPic);
-					}
-				} else if(type.equals("OR")) {
-					if(firstTag || secondTag) {
-						results.add(currPic);
+				//makes sure each resulting photo is unique
+				if(!results.contains(currPic)) {
+					//add photo if conditions are true
+					if(type.equals("SINGLE")) {
+						if(firstTag) {
+							results.add(currPic);
+						}
+					} else if(type.equals("AND")) {
+						if(firstTag && secondTag) {
+							results.add(currPic);
+						}
+					} else if(type.equals("OR")) {
+						if(firstTag || secondTag) {
+							results.add(currPic);
+						}
 					}
 				}
 			}

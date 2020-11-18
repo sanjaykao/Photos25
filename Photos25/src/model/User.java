@@ -69,14 +69,6 @@ public class User implements Serializable{
 		photo.setCaption(content);
 	}
 	
-	public void displayPhoto(Photo photo) {
-		//not sure if this is supposed to be in the controller?
-	}
-	
-	public void displayAlbum(Album album) {
-		//also not sure about this one too
-	}
-	
 	public void addTag(Photo photo, String name, String value) {
 		//creates a new tag and then adds to the photo's tag arraylist
 		ArrayList<Tag> tags = photo.getTags();

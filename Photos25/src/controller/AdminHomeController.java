@@ -175,7 +175,8 @@ public class AdminHomeController {
 					String picName = stockPhotoFile.getAbsolutePath(); 
 					Calendar date = Calendar.getInstance();
 					Photo newPic = new Photo(picName, pic, date);
-					System.out.print(newPic.getPhotoName() + " ");
+					//newPic.setCaption("this is where caption would go");
+					//System.out.print(newPic.getPhotoName() + " ");
 					stockAlbum.addPhotoToAlbum(newPic);
 					stockAlbum.findEarliestDate();
 					stockAlbum.findLatestDate();
@@ -183,16 +184,21 @@ public class AdminHomeController {
 				
 			}
 			
-			for(int i = 0; i < stockAlbum.getNumOfPhotos(); i++) {
-				System.out.print(stockAlbum.getPhotos().get(i) + " ");
-			}
 			
-			System.out.println(stockAlbum.getNumOfPhotos());
+			//System.out.println(stockAlbum.getNumOfPhotos());
 			
 			User stockUser = new User("stock");
 			stockUser.addAlbum(stockAlbum);
 			
-			System.out.println(stockUser.getAlbums());
+			/*for(int i = 0; i < stockAlbum.getNumOfPhotos(); i++) {
+				//System.out.print(stockAlbum.getPhotos().get(i) + " ");
+				stockUser.addTag(stockAlbum.getPhotos().get(i), "name", "value");
+			}
+			
+			stockUser.addTag(stockAlbum.getPhotos().get(0), "funny", "peep");
+			stockUser.addTag(stockAlbum.getPhotos().get(1), "savage", "ugly popcorn");*/
+			
+			//System.out.println(stockUser.getAlbums());
 			return stockUser;
 		}
 		
