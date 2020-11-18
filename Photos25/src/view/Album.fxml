@@ -34,9 +34,9 @@
         <Button layoutX="14" layoutY="14" prefHeight="27.0" prefWidth="100.0" mnemonicParsing="false" text="Back to Home" onAction="#homePage" fx:id="home" />
 		<Button layoutX="586" layoutY="14.0" prefHeight="27.0" prefWidth="100.0" mnemonicParsing="false" text="Logout" onAction="#logout" fx:id="logout" />
 		
-		<AnchorPane layoutX="650" layoutY="14" prefHeight="361" prefWidth="500" fx:id="anchorPane2">
+		<AnchorPane layoutX="700" layoutY="51" prefHeight="361" prefWidth="470" fx:id="anchorPane2">
 		</AnchorPane>
-		<TextArea layoutX="825.0" layoutY="385.0" prefHeight="50.0" prefWidth="150.0" fx:id="details">
+		<TextArea layoutX="670.0" layoutY="385.0" prefHeight="65.0" prefWidth="500.0" fx:id="details">
 			<padding>
 				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 			</padding>

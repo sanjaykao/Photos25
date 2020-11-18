@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -212,7 +213,8 @@ public class UserHomeController {
 	
 	private void setCurrentUser(User user) {
 		this.user = user;
-		readSerial();
+		albums = user.getAlbums();
+		tilePane.getChildren().clear();
 		displayAlbums();
 	}
 	
@@ -220,10 +222,10 @@ public class UserHomeController {
 		for(Album album : albums) {
 			if(album.getNumOfPhotos() == 0) {
 				File file = new File("./data/pic7.JPG");
-				Image image = new Image(file.toURI().toString(), 100, 110, false, false);
+				Image image = new Image(file.toURI().toString(), 150, 110, false, false);
 				ImageView imageView = new ImageView(image);
 				imageView.setUserData(album);
-				Text details = new Text(album.getAlbumName() + "\n" + album.getNumOfPhotos());
+				Text details = new Text(album.getAlbumName() + "\n  " + album.getNumOfPhotos());
 				VBox vbox = new VBox();
 				vbox.setAlignment(Pos.CENTER);
 				vbox.getChildren().add(imageView);
@@ -234,9 +236,12 @@ public class UserHomeController {
 				});
 			}else {
 				ArrayList<Photo> photos = album.getPhotos();
-				Image image = photos.get(photos.size() - 1).getImage();
+				//Image image = photos.get(photos.size() - 1).getImage();
+				File file = new File(photos.get(photos.size() - 1).getPhotoName());
+				Image image = new Image(file.toURI().toString(), 150, 110, false, false);
 				ImageView imageView = new ImageView(image);
-				Text details = new Text(album.getAlbumName() + "\n" + album.getNumOfPhotos() + "\n" + album.getEarliestDate() + " - " + album.getLatestDate());
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+				Text details = new Text("                    " + album.getAlbumName() + "\n                         " + album.getNumOfPhotos() + "\n" + dateFormat.format(album.getEarliestDate().getTime()) + " - " + dateFormat.format(album.getLatestDate().getTime()));
 				VBox vbox = new VBox();
 				vbox.setAlignment(Pos.CENTER);
 				vbox.getChildren().add(imageView);

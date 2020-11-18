@@ -177,6 +177,8 @@ public class AdminHomeController {
 					Photo newPic = new Photo(picName, pic, date);
 					System.out.print(newPic.getPhotoName() + " ");
 					stockAlbum.addPhotoToAlbum(newPic);
+					stockAlbum.findEarliestDate();
+					stockAlbum.findLatestDate();
 				}
 				
 			}
