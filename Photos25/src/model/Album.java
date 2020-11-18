@@ -79,4 +79,38 @@ public class Album implements Serializable{
 	public ArrayList<Photo> getPhotos() {
 		return photos;
 	}
+	
+	public void findEarliestDate() {
+		if(photos.size() == 0) {
+			return;
+		}
+		Calendar earliest = photos.get(0).getDate();
+		if(photos.size() == 1) {
+			earliestDate = earliest;
+		}else {
+			for(int i = 1; i < photos.size(); i++) {
+				if(photos.get(i).getDate().before(earliest)) {
+					earliest = photos.get(i).getDate();
+				}
+			}
+			earliestDate = earliest;
+		}
+	}
+	
+	public void findLatestDate() {
+		if(photos.size() == 0) {
+			return;
+		}
+		Calendar latest = photos.get(0).getDate();
+		if(photos.size() == 1) {
+			latestDate = latest;
+		}else {
+			for(int i = 1; i < photos.size(); i++) {
+				if(photos.get(i).getDate().after(latest)) {
+					latest = photos.get(i).getDate();
+				}
+			}
+			latestDate = latest;
+		}
+	}
 }

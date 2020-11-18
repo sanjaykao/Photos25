@@ -23,7 +23,6 @@ import model.User;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Optional;
 
@@ -79,7 +78,6 @@ public class AlbumController {
 		File selected = fileChooser.showOpenDialog(stage);
 		if(selected != null) {
 			String path = selected.getAbsolutePath();
-			System.out.println(path);
 			File file = new File(path);
 			Image image = new Image(file.toURI().toString(), 100, 0, false, false);
 			Calendar date = Calendar.getInstance();
@@ -95,6 +93,8 @@ public class AlbumController {
 			}else {
 				Photo temp = new Photo(path, image, date);
 				album.addPhotoToAlbum(temp);
+				album.findEarliestDate();
+				album.findLatestDate();
 				User.write(user, user.getUsername());
 				photos = album.getPhotos();
 				tilePane.getChildren().clear();
@@ -118,6 +118,8 @@ public class AlbumController {
     		Optional<ButtonType> result = alert.showAndWait();
     		if(result.get() == ButtonType.OK) {
     			album.deletePhoto(selectedPhoto);
+    			album.findEarliestDate();
+    			album.findLatestDate();
     			User.write(user, user.getUsername());
     			photos = album.getPhotos();
     			tilePane.getChildren().clear();
@@ -356,6 +358,8 @@ public class AlbumController {
 							for(Photo photo : photos) {
 								if(photo.getPhotoName().equals(selectedPhoto)) {
 									user.copyPhoto(item2, photo);
+									item2.findEarliestDate();
+									item2.findLatestDate();
 									User.write(user, user.getUsername());
 									setWarning("Success!", "Photo copied successfully");
 									break;
@@ -411,6 +415,10 @@ public class AlbumController {
 							for(Photo photo : photos) {
 								if(photo.getPhotoName().equals(selectedPhoto)) {
 									user.movePhoto(item2, album, photo);
+									album.findEarliestDate();
+									album.findLatestDate();
+									item2.findEarliestDate();
+									item2.findLatestDate();
 									User.write(user, user.getUsername());
 									photos = album.getPhotos();
 									tilePane.getChildren().clear();
@@ -447,7 +455,7 @@ public class AlbumController {
 					ImageView imageView = new ImageView(image);
 					anchorPane2.getChildren().add(imageView);
 					Calendar date = photo.getDate();
-					DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm");
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
 					ArrayList<Tag> temp = photo.getTags();
 					String tags = "";
 					for(int i = 0; i < temp.size(); i++) {
@@ -457,7 +465,7 @@ public class AlbumController {
 							tags += temp.get(i).getName() + ":" + temp.get(i).getValue() + ", ";
 						}
 					}
-					String content = selectedPhoto + "\n" + dateFormat.format(date) + "\n" + tags;
+					String content = photo.getCaption() + "\n" + dateFormat.format(date.getTime()) + "\n" + tags;
 					details.setText(content);
 					selectedPhoto = "";
 					break;
@@ -487,7 +495,7 @@ public class AlbumController {
 			ImageView imageView = new ImageView(image);
 			anchorPane2.getChildren().add(imageView);
 			Calendar date = photos.get(index).getDate();
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
 			ArrayList<Tag> temp = photos.get(index).getTags();
 			String tags = "";
 			for(int i = 0; i < temp.size(); i++) {
@@ -497,7 +505,7 @@ public class AlbumController {
 					tags += temp.get(i).getName() + ":" + temp.get(i).getValue() + ", ";
 				}
 			}
-			String content = selectedPhoto + "\n" + dateFormat.format(date) + "\n" + tags;
+			String content = photos.get(index).getCaption() + "\n" + dateFormat.format(date.getTime()) + "\n" + tags;
 			details.setText(content);
 		}
 	}
@@ -543,7 +551,7 @@ public class AlbumController {
 			ImageView imageView = new ImageView(image);
 			anchorPane2.getChildren().add(imageView);
 			Calendar date = photos.get(index).getDate();
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
 			ArrayList<Tag> temp = photos.get(index).getTags();
 			String tags = "";
 			for(int i = 0; i < temp.size(); i++) {
@@ -553,7 +561,7 @@ public class AlbumController {
 					tags += temp.get(i).getName() + ":" + temp.get(i).getValue() + ", ";
 				}
 			}
-			String content = selectedPhoto + "\n" + dateFormat.format(date) + "\n" + tags;
+			String content = photos.get(index).getCaption() + "\n" + dateFormat.format(date.getTime()) + "\n" + tags;
 			details.setText(content);
 		}
 	}
@@ -578,7 +586,7 @@ public class AlbumController {
 			ImageView imageView = new ImageView(image);
 			anchorPane2.getChildren().add(imageView);
 			Calendar date = photos.get(index).getDate();
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
 			ArrayList<Tag> temp = photos.get(index).getTags();
 			String tags = "";
 			for(int i = 0; i < temp.size(); i++) {
@@ -588,7 +596,7 @@ public class AlbumController {
 					tags += temp.get(i).getName() + ":" + temp.get(i).getValue() + ", ";
 				}
 			}
-			String content = selectedPhoto + "\n" + dateFormat.format(date) + "\n" + tags;
+			String content = photos.get(index).getCaption() + "\n" + dateFormat.format(date.getTime()) + "\n" + tags;
 			details.setText(content);
 		}
 	}
@@ -623,6 +631,7 @@ public class AlbumController {
 		photos = album.getPhotos();
 		tilePane.getChildren().clear();
 		anchorPane2.getChildren().clear();
+		details.clear();
 		displayPhotos();
 	}
 	

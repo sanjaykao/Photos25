@@ -131,17 +131,17 @@ public class User implements Serializable{
 	public void copyPhoto(Album dest, Photo photo) {
 		//creates a copy of the photo and adds to the dest album's arraylist of photos
 		//also update the photo's arraylist of albums
-		dest.getPhotos().add(photo);
+		dest.addPhotoToAlbum(photo);
 		photo.getAlbums().add(dest);
 	}
 	
 	public void movePhoto(Album dest, Album source, Photo photo) {
 		//removes photo from source and add to the dest album's arraylist of photos
 		//also update the photo's arralist of albums
-		dest.getPhotos().add(photo);
+		dest.addPhotoToAlbum(photo);
 		photo.getAlbums().add(dest);
 		photo.getAlbums().remove(source);
-		source.getPhotos().remove(photo);
+		source.deletePhoto(photo.getPhotoName());
 	}
 	
 	public static void write(User user, String name) {
