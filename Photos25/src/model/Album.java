@@ -39,6 +39,7 @@ public class Album implements Serializable{
 			if(item.getPhotoName().equals(photo)) {
 				photos.remove(item);
 				numOfPhotos--;
+				break;
 			}
 		}
 	}

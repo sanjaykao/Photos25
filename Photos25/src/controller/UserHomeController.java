@@ -51,6 +51,9 @@ public class UserHomeController {
 	
 	@FXML
 	private void createAlbum(ActionEvent event) {
+		if(!selectedAlbum.equals("")) {
+			selectedAlbum = "";
+		}
 		TextInputDialog td = new TextInputDialog();
 		td.setTitle("Create new album");
 		td.setHeaderText("Enter a name");
@@ -89,6 +92,7 @@ public class UserHomeController {
     			if(albums.size() > 0) {
     				displayAlbums();
     			}
+    			selectedAlbum = "";
     		}
 		}
 	}
@@ -131,6 +135,7 @@ public class UserHomeController {
 					break;
 				}
 			}
+			selectedAlbum = "";
 		}
 	}
 	
@@ -157,6 +162,9 @@ public class UserHomeController {
 	
 	@FXML
 	private void logout(ActionEvent event) {
+		if(!selectedAlbum.equals("")) {
+			selectedAlbum = "";
+		}
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirm logout");
 		alert.setContentText("Are you sure you want to logout?");
@@ -206,13 +214,15 @@ public class UserHomeController {
 	}
 	
 	public void initCurrentUser(User user) {
-		User temp = user;
-		setCurrentUser(temp);
-	}
-	
-	private void setCurrentUser(User user) {
 		this.user = user;
 		readSerial();
+		tilePane.getChildren().clear();
+		displayAlbums();
+	}
+	
+	public void initCurrentUser2(User user) {
+		this.user = user;
+		tilePane.getChildren().clear();
 		displayAlbums();
 	}
 	
@@ -234,7 +244,9 @@ public class UserHomeController {
 				});
 			}else {
 				ArrayList<Photo> photos = album.getPhotos();
-				Image image = photos.get(photos.size() - 1).getImage();
+				//Image image = photos.get(photos.size() - 1).getImage();
+				File file = new File(photos.get(photos.size() - 1).getPhotoName());
+				Image image = new Image(file.toURI().toString(), 100, 110, false, false);
 				ImageView imageView = new ImageView(image);
 				Text details = new Text(album.getAlbumName() + "\n" + album.getNumOfPhotos() + "\n" + album.getEarliestDate() + " - " + album.getLatestDate());
 				VBox vbox = new VBox();
@@ -271,7 +283,7 @@ public class UserHomeController {
 		
 	private void setWarning(String title, String content) {
 		Alert alert = new Alert(AlertType.WARNING);
-		alert.setTitle(title);
+		alert.setHeaderText(title);
 		alert.setContentText(content);
 		alert.showAndWait();
 	}	
