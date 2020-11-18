@@ -21,11 +21,11 @@ public class AdminUser implements Serializable{
 		users = new ArrayList<User>();
 	}
 	
-	public void addUser(String username) {
+	public User addUser(String username) {
 		//creates new user with specified username in the arraylist of users
 		User user = new User(username);
 		users.add(user);
-		
+		return user;
 	}
 	
 	public void addUser(User user) {

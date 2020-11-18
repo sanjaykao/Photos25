@@ -41,9 +41,6 @@ public class AlbumController {
 	private AnchorPane anchorPane2;
 	
 	@FXML
-	private ImageView iV;
-	
-	@FXML
 	private TextArea details;
 	
 	private ArrayList<Photo> photos;
@@ -436,13 +433,13 @@ public class AlbumController {
 			setWarning("No photo selected", "Please select a photo or add more photos.");
 		}else {
 			details.clear();
-			iV.setImage(null);
-			System.gc();
+			anchorPane2.getChildren().clear();
 			for(Photo photo : photos) {
 				if(photo.getPhotoName().equals(selectedPhoto)) {
 					File file = new File(photo.getPhotoName());
-					Image image = new Image(file.toURI().toString(), 480, 351, false, false);
-					iV.setImage(image);
+					Image image = new Image(file.toURI().toString(), 480, 361, false, false);
+					ImageView imageView = new ImageView(image);
+					anchorPane2.getChildren().add(imageView);
 					Calendar date = photo.getDate();
 					DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm");
 					ArrayList<Tag> temp = photo.getTags();
@@ -478,11 +475,11 @@ public class AlbumController {
 			setWarning("Can't open slideshow", "No photos to display, please add more photos");
 		}else {
 			details.clear();
-			iV.setImage(null);
-			System.gc();
+			anchorPane2.getChildren().clear();
 			File file = new File(photos.get(index).getPhotoName());
 			Image image = new Image(file.toURI().toString(), 480, 351, false, false);
-			iV.setImage(image);
+			ImageView imageView = new ImageView(image);
+			anchorPane2.getChildren().add(imageView);
 			Calendar date = photos.get(index).getDate();
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm");
 			ArrayList<Tag> temp = photos.get(index).getTags();
@@ -529,8 +526,7 @@ public class AlbumController {
 			setWarning("Warning", "Slideshow hasn't been open yet");
 		}else {
 			details.clear();
-			iV.setImage(null);
-			System.gc();
+			anchorPane2.getChildren().clear();
 			if(index == 0) {
 				index = photos.size() - 1;
 			}else {
@@ -538,7 +534,8 @@ public class AlbumController {
 			}
 			File file = new File(photos.get(index).getPhotoName());
 			Image image = new Image(file.toURI().toString(), 480, 351, false, false);
-			iV.setImage(image);
+			ImageView imageView = new ImageView(image);
+			anchorPane2.getChildren().add(imageView);
 			Calendar date = photos.get(index).getDate();
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm");
 			ArrayList<Tag> temp = photos.get(index).getTags();
@@ -564,8 +561,7 @@ public class AlbumController {
 			setWarning("Warning", "Slideshow hasn't been open yet");
 		}else {
 			details.clear();
-			iV.setImage(null);
-			System.gc();
+			anchorPane2.getChildren().clear();
 			if(index == photos.size() - 1) {
 				index = 0;
 			}else {
@@ -573,7 +569,8 @@ public class AlbumController {
 			}
 			File file = new File(photos.get(index).getPhotoName());
 			Image image = new Image(file.toURI().toString(), 480, 351, false, false);
-			iV.setImage(image);
+			ImageView imageView = new ImageView(image);
+			anchorPane2.getChildren().add(imageView);
 			Calendar date = photos.get(index).getDate();
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm");
 			ArrayList<Tag> temp = photos.get(index).getTags();

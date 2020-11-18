@@ -83,7 +83,8 @@ public class AdminHomeController {
 				setWarning("Cannot add user", "This name is already taken!");
 			}else {
 				//File userFile = new File("." + File.separator + name + ".dat");
-				admin.addUser(name);
+				User newUser = admin.addUser(name);
+				User.write(newUser, name);
 				AdminUser.write(admin);
 				users = admin.getUsers();
 				
