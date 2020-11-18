@@ -107,11 +107,25 @@ public class UserHomeController {
 					
 					if(result.isPresent()) {
 						String name = td.getEditor().getText();
+						boolean nameTaken = false;
 						//add check to see if new name is same as another album
-						user.renameAlbum(album, name);
-						User.write(user, user.getUsername());
-						readSerial();
-						displayAlbums();
+						for(Album item : albums) {
+							if(item.getAlbumName().equals(album.getAlbumName())) {
+								continue;
+							}
+							if(item.getAlbumName().equals(name)) {
+								nameTaken = true;
+								break;
+							}
+						}
+						if(nameTaken) {
+							setWarning("Can't rename album", "There is already another album with this name!");
+						}else {
+							user.renameAlbum(album, name);
+							User.write(user, user.getUsername());
+							tilePane.getChildren().clear();
+							displayAlbums();
+						}
 						break;
 					}
 					break;
