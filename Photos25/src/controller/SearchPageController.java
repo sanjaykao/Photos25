@@ -55,19 +55,30 @@ public class SearchPageController {
 	
 	@FXML
 	private void searchByDateBtn(ActionEvent event) {
-		LocalDate firstLocal = firstDate.getValue();
-		Instant firstInstant = Instant.from(firstLocal.atStartOfDay(ZoneId.systemDefault()));
-		Date date1 = Date.from(firstInstant);
-		
-		LocalDate secondLocal = secondDate.getValue();
-		Instant secondInstant = Instant.from(secondLocal.atStartOfDay(ZoneId.systemDefault()));
-		Date date2 = Date.from(secondInstant);
-		
-		picResults = searchByDate(date1, date2);
-		for(int i = 0; i < picResults.size(); i++) {
-			System.out.println(picResults.get(i).photoName);
+		if(firstDate.getValue() == null || secondDate.getValue() == null) {
+			setWarning("Invalid input", "Please input both dates");
+		} else if(albums.size() == 0) {
+			setWarning("No pictures to search", "Please add pictures");
+		} else {
+			LocalDate firstLocal = firstDate.getValue();
+			Instant firstInstant = Instant.from(firstLocal.atStartOfDay(ZoneId.systemDefault()));
+			Date date1 = Date.from(firstInstant);
+			
+			LocalDate secondLocal = secondDate.getValue();
+			Instant secondInstant = Instant.from(secondLocal.atStartOfDay(ZoneId.systemDefault()));
+			Date date2 = Date.from(secondInstant);
+			
+			picResults = searchByDate(date1, date2);
+			for(int i = 0; i < picResults.size(); i++) {
+				System.out.println(picResults.get(i).photoName);
+			}
+			
+			if(picResults.size() == 0) {
+				setWarning("Empty search result", "There are no photos that fit the search criteria");
+			} else {
+				displayResults();
+			}
 		}
-		displayResults();
 	}
 	
 	@FXML
@@ -76,20 +87,31 @@ public class SearchPageController {
 		Tag tag2;
 		
 		if(albums.size() == 0) {
-		 	//cannot search - ERROR
-		}
-		if(value1 == null) {
-			//another error
+			setWarning("No pictures to search", "Please add pictures");
+		} else if(value1.getText().trim().isEmpty() || value1.getText() == null) {
+			setWarning("Invalid input", "Please give at least one value");
+		} else if(name1.getValue() == null || name2.getValue() == null) {
+			setWarning("No valid tags to search", "Please add tags");
 		} else if(compareType.getValue().equals("SINGLE")) {
 			tag1 = new Tag(name1.getValue(), value1.getText().trim());
-			searchByTag(tag1, null, compareType.getValue());
+			picResults = searchByTag(tag1, null, compareType.getValue());
+			
+			if(picResults.size() == 0) {
+				setWarning("Empty search result", "There are no photos that fit the search criteria");
+			} else {
+				displayResults();
+			}
 		} else {
 			tag1 = new Tag(name1.getValue(), value1.getText().trim());
 			tag2 = new Tag(name2.getValue(), value2.getText().trim());
-			searchByTag(tag1, tag2, compareType.getValue());
+			picResults = searchByTag(tag1, tag2, compareType.getValue());
+			
+			if(picResults.size() == 0) {
+				setWarning("Empty search result", "There are no photos that fit the search criteria");
+			} else {
+				displayResults();
+			}
 		}
-		
-		displayResults();
 	}
 	@FXML
 	private void newSearchAlbum(ActionEvent event) {
@@ -139,8 +161,9 @@ public class SearchPageController {
 		tags = user.getAlbumTags();
 		
 		if(tags == null) {
-			//error
 			tags = new ArrayList<Tag>();
+		} else if(albums == null) {
+			albums = new ArrayList<Album>();
 		}
 		
 		if(tags.size() > 0) {
@@ -148,6 +171,8 @@ public class SearchPageController {
 			for(Tag currTag : tags) {
 				names.add(currTag.getName());
 			}
+			name1.getItems().setAll(names);
+			name2.getItems().setAll(names);
 		}
 	}
 	
@@ -171,8 +196,6 @@ public class SearchPageController {
 	public ArrayList<Photo> searchByDate(Date first, Date last) {
 		//returns a new arraylist (copy of the photos) between first and last dates
 		ArrayList<Photo> results = new ArrayList<Photo>();
-		
-
 
 		for(Album currAlbum : albums) {
 			for(Photo currPic : currAlbum.getPhotos()) {
@@ -191,11 +214,6 @@ public class SearchPageController {
 		//type : single, and, or
 		//returns a new arraylist(copy of the photos)
 		ArrayList<Photo> results = new ArrayList<Photo>();
-		
-		if(albums.size() == 0) {
-			//cannot search - ERROR
-			return null;
-		}
 		
 		for(Album currAlbum : albums) {
 			for(Photo currPic : currAlbum.getPhotos()) {
@@ -234,6 +252,13 @@ public class SearchPageController {
 		}
 		
 		return results;
+	}
+	
+	private void setWarning(String title, String content) {
+		Alert alert = new Alert(AlertType.WARNING);
+		alert.setTitle(title);
+		alert.setContentText(content);
+		alert.showAndWait();
 	}
 	
 }
