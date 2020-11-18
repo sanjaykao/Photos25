@@ -95,13 +95,13 @@ public class User implements Serializable{
 		userTags.add(tag);
 	}
 	
-	public void deleteTag(Photo photo, Tag tag) {
+	public void deleteTag(Photo photo, String name, String value) {
 		//finds tag in the arraylist of tags and removes it
 		ArrayList<Tag> tags = photo.getTags();
 		for(int i = 0; i < tags.size(); i++) {
-			if(tags.get(i).equals(tag)) {
-				tags.remove(i);
+			if(tags.get(i).getName().equals(name) && tags.get(i).getValue().equals(value)) {
 				deleteUserTag(tags.get(i));
+				tags.remove(i);
 				break;
 			}
 		}
