@@ -7,7 +7,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+import model.Album;
+import model.Tag;
+import model.User;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import app.Photos;
@@ -15,6 +19,10 @@ import app.Photos;
 
 public class SearchPageController {
 
+	private User user;
+	private ArrayList<Album> albums;
+	private ArrayList<Tag> tags;
+	
 	private Scene userScene;
 	private Scene loginScene;
 	
@@ -22,6 +30,10 @@ public class SearchPageController {
 	private void initialize() {
 	}
 	
+	@FXML
+	private void homePage(ActionEvent event) {
+		openUserScene(event);
+	}
 	
 	@FXML
 	private void logout(ActionEvent event) {
@@ -53,6 +65,12 @@ public class SearchPageController {
 		Stage primaryStage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
 		primaryStage.setTitle("User Home Page");
 		primaryStage.setScene(userScene);
+	}
+	
+	public void initCurrentUser(User user) {
+		this.user = user;
+		albums = user.getAlbums();
+		tags = user.getAlbumTags();
 	}
 	
 }

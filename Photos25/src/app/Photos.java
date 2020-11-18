@@ -75,7 +75,7 @@ public class Photos extends Application {
         AlbumController albumController = albumLoader.getController();
         albumController.setLoginScene(loginScene);
         albumController.setUserScene(userScene);
-        userController.setSearchScene(albumScene);
+        userController.setAlbumScene(albumScene);
         
         // send admin and user scenes to login controller
         loginController.setAdminScene(adminScene);
