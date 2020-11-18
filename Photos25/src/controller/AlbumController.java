@@ -78,27 +78,32 @@ public class AlbumController {
 		File selected = fileChooser.showOpenDialog(stage);
 		if(selected != null) {
 			String path = selected.getAbsolutePath();
-			File file = new File(path);
-			Image image = new Image(file.toURI().toString(), 100, 0, false, false);
-			Calendar date = Calendar.getInstance();
-			boolean photoExists = false;
-			for(Photo photo : photos) {
-				if(photo.getPhotoName().equals(path)) {
-					photoExists = true;
-					break;
-				}
-			}
-			if(photoExists) {
-				setWarning("Can't add photo", "Photo already exists in this album!");
+			String ext = path.substring(path.lastIndexOf('.') + 1).toLowerCase();
+			if(!ext.equals("jpg") && !ext.equals("jpeg") && !ext.equals("gif") && !ext.equals("bmp") && !ext.equals("png")) {
+				setWarning("Can't add photo", "The file you selected is not the right format");
 			}else {
-				Photo temp = new Photo(path, image, date);
-				album.addPhotoToAlbum(temp);
-				album.findEarliestDate();
-				album.findLatestDate();
-				User.write(user, user.getUsername());
-				photos = album.getPhotos();
-				tilePane.getChildren().clear();
-				displayPhotos();
+				File file = new File(path);
+				Image image = new Image(file.toURI().toString(), 100, 0, false, false);
+				Calendar date = Calendar.getInstance();
+				boolean photoExists = false;
+				for(Photo photo : photos) {
+					if(photo.getPhotoName().equals(path)) {
+						photoExists = true;
+						break;
+					}
+				}
+				if(photoExists) {
+					setWarning("Can't add photo", "Photo already exists in this album!");
+				}else {
+					Photo temp = new Photo(path, image, date);
+					album.addPhotoToAlbum(temp);
+					album.findEarliestDate();
+					album.findLatestDate();
+					User.write(user, user.getUsername());
+					photos = album.getPhotos();
+					tilePane.getChildren().clear();
+					displayPhotos();
+				}
 			}
 		}
 	}
