@@ -34,6 +34,11 @@ public class SearchPageController {
 	@FXML private TilePane tilePane;
 	@FXML private DatePicker firstDate;
 	@FXML private DatePicker secondDate;
+	@FXML private ComboBox<String> name1;
+	@FXML private TextField value1;
+	@FXML private ComboBox<String> compareType;
+	@FXML private ComboBox<String> name2;
+	@FXML private TextField value2;
 
 	private User user;
 	private ArrayList<Album> albums;
@@ -45,6 +50,7 @@ public class SearchPageController {
 	
 	@FXML
 	private void initialize() {
+		compareType.getItems().setAll("SINGLE", "AND", "OR");
 	}
 	
 	@FXML
@@ -66,6 +72,22 @@ public class SearchPageController {
 	
 	@FXML
 	private void searchByTagBtn(ActionEvent event) {
+		Tag tag1;
+		Tag tag2;
+		
+		if(albums.size() == 0) {
+		 	//cannot search - ERROR
+		}
+		if(value1 == null) {
+			//another error
+		} else if(compareType.getValue().equals("SINGLE")) {
+			tag1 = new Tag(name1.getValue(), value1.getText().trim());
+			searchByTag(tag1, null, compareType.getValue());
+		} else {
+			tag1 = new Tag(name1.getValue(), value1.getText().trim());
+			tag2 = new Tag(name2.getValue(), value2.getText().trim());
+			searchByTag(tag1, tag2, compareType.getValue());
+		}
 		
 		displayResults();
 	}
@@ -115,6 +137,18 @@ public class SearchPageController {
 		this.user = user;
 		albums = user.getAlbums();
 		tags = user.getAlbumTags();
+		
+		if(tags == null) {
+			//error
+			tags = new ArrayList<Tag>();
+		}
+		
+		if(tags.size() > 0) {
+			ArrayList<String> names = new ArrayList<String>();
+			for(Tag currTag : tags) {
+				names.add(currTag.getName());
+			}
+		}
 	}
 	
 	private void displayResults() {
@@ -138,10 +172,7 @@ public class SearchPageController {
 		//returns a new arraylist (copy of the photos) between first and last dates
 		ArrayList<Photo> results = new ArrayList<Photo>();
 		
-		if(albums.size() == 0) {
-		 	//cannot search - ERROR
-			return null;
-		}
+
 
 		for(Album currAlbum : albums) {
 			for(Photo currPic : currAlbum.getPhotos()) {

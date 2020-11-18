@@ -52,9 +52,6 @@ public class UserHomeController {
 	
 	@FXML
 	private void createAlbum(ActionEvent event) {
-		if(!selectedAlbum.equals("")) {
-			selectedAlbum = "";
-		}
 		TextInputDialog td = new TextInputDialog();
 		td.setTitle("Create new album");
 		td.setHeaderText("Enter a name");
@@ -93,7 +90,6 @@ public class UserHomeController {
     			if(albums.size() > 0) {
     				displayAlbums();
     			}
-    			selectedAlbum = "";
     		}
 		}
 	}
@@ -136,7 +132,6 @@ public class UserHomeController {
 					break;
 				}
 			}
-			selectedAlbum = "";
 		}
 	}
 	
@@ -163,9 +158,6 @@ public class UserHomeController {
 	
 	@FXML
 	private void logout(ActionEvent event) {
-		if(!selectedAlbum.equals("")) {
-			selectedAlbum = "";
-		}
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirm logout");
 		alert.setContentText("Are you sure you want to logout?");
@@ -215,13 +207,11 @@ public class UserHomeController {
 	}
 	
 	public void initCurrentUser(User user) {
-		this.user = user;
-		readSerial();
-		tilePane.getChildren().clear();
-		displayAlbums();
+		User temp = user;
+		setCurrentUser(temp);
 	}
 	
-	public void initCurrentUser2(User user) {
+	private void setCurrentUser(User user) {
 		this.user = user;
 		albums = user.getAlbums();
 		tilePane.getChildren().clear();
@@ -286,7 +276,7 @@ public class UserHomeController {
 		
 	private void setWarning(String title, String content) {
 		Alert alert = new Alert(AlertType.WARNING);
-		alert.setHeaderText(title);
+		alert.setTitle(title);
 		alert.setContentText(content);
 		alert.showAndWait();
 	}	

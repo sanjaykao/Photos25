@@ -172,7 +172,7 @@ public class AdminHomeController {
 				
 				if(stockPhotoFile != null) {
 					Image pic = new Image(stockPhotoFile.toURI().toString());
-					String picName = stockPhotoFile.getAbsolutePath(); 
+					String picName = stockPhotoFile.getName(); 
 					Calendar date = Calendar.getInstance();
 					Photo newPic = new Photo(picName, pic, date);
 					System.out.print(newPic.getPhotoName() + " ");
@@ -241,7 +241,7 @@ public class AdminHomeController {
 	
 	private void setWarning(String title, String content) {
 		Alert alert = new Alert(AlertType.WARNING);
-		alert.setHeaderText(title);
+		alert.setTitle(title);
 		alert.setContentText(content);
 		alert.showAndWait();
 	}
