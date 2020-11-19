@@ -3,24 +3,32 @@ package model;
 import java.io.*;
 import java.util.*;
 
+/*
+ * AdminUser model is for the admin account
+ * 
+ * @author Virginia Cheng
+ * @author Sanjay Kao
+ */
+
 public class AdminUser implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	//public String admin;
 	public ArrayList<User> users;
-	
 	public static final String storeDir = ".";
 	public static final String storeFile = "users.dat";
 	
-	//idk about this
+	/*
+	 * Zero Arg Constructor for AdminUser
+	 */
 	public AdminUser() {
-		//admin = "admin";
 		users = new ArrayList<User>();
 	}
 	
+	/*
+	 * Adds user to the arraylist of users with username string
+	 * @param username Username of new user
+	 * @return The instance of a new User
+	 */
 	public User addUser(String username) {
 		//creates new user with specified username in the arraylist of users
 		User user = new User(username);
@@ -28,10 +36,18 @@ public class AdminUser implements Serializable{
 		return user;
 	}
 	
+	/*
+	 * Adds User instance to the arraylist of users
+	 * @param user User instance to be added
+	 */
 	public void addUser(User user) {
 		users.add(user);
 	}
 	
+	/*
+	 * Removes user from the arraylist of users
+	 * @param user User instance to be removed
+	 */
 	public void removeUser(User user) {
 		//removes user with specified username in the arraylist of users
 		for(int i = 0; i < users.size(); i++) {
@@ -41,10 +57,18 @@ public class AdminUser implements Serializable{
 		}
 	}
 	
+	/*
+	 * Gets the list of existing users
+	 * @return Arraylist of existing users
+	 */
 	public ArrayList<User> getUsers(){
 		return users;
 	}
 	
+	/*
+	 * Writes a new file with an AdminUser instance
+	 * @param admin AdminUser instance to be added to output file
+	 */
 	public static void write(AdminUser admin) {
 		ObjectOutputStream oos;
 		try {
@@ -60,6 +84,11 @@ public class AdminUser implements Serializable{
 		}
 	}
 	
+	/*
+	 * Writes a new file for stock user
+	 * @param user Stock User instance to be added to output file
+	 * @param name Name of file to be created
+	 */
 	public static void writeStock(User user, String name) {
 		String fileName = name + ".dat";
 		ObjectOutputStream oos;
@@ -76,6 +105,10 @@ public class AdminUser implements Serializable{
 		}
 	}
 	
+	/*
+	 * Reads the given file to get the AdminUser instance
+	 * @return AdminUser instance
+	 */
 	public static AdminUser read() {
 		ObjectInputStream ois;
 		try {
@@ -96,11 +129,18 @@ public class AdminUser implements Serializable{
 		return null;
 	}
 	
+	/*
+	 * Deletes the AdminUser file
+	 */
 	public static void delete() {
 		File file = new File(storeDir + File.separator + storeFile);
 		file.delete();
 	}
 	
+	/*
+	 * Deletes the given User file
+	 * @param name Name of file to be deleted
+	 */
 	public void deleteUserFile(String name) {
 		File file = new File(storeDir + File.separator + name + ".dat");
 		file.delete();

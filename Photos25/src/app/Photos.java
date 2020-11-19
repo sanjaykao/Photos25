@@ -7,8 +7,19 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+/*
+ * Photos25 Project
+ * 
+ * @author Virginia Cheng
+ * @author Sanjay Kao
+ */
+
+
 public class Photos extends Application {
-	
+	/*
+	 * Starts the Photos application
+	 * @param stage
+	 * */
 	@Override
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub

@@ -23,12 +23,15 @@ import model.User;
 import model.Album;
 import model.Photo;
 
-//import app.Photos;
-
+/*
+ * User Home Controller allows user to see and edit their existing albums
+ * 
+ * @author Virginia Cheng
+ * @author Sanjay Kao
+ */
 
 public class UserHomeController {
-	@FXML
-	private TilePane tilePane;
+	@FXML private TilePane tilePane;
 	
 	private ArrayList<Album> albums;
 	private String selectedAlbum;
@@ -41,15 +44,18 @@ public class UserHomeController {
 	public AlbumController albumController;
 	public SearchPageController searchController;
 	
+	/*
+	 * Initializes the controller when called in Photos.java
+	 */
 	@FXML
 	private void initialize() {
 		selectedAlbum = "";
 	}
 	
-	public void start(Stage mainStage) {
-		
-	}
-	
+	/*
+	 * Allows users to add album to their account
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void createAlbum(ActionEvent event) {
 		if(!selectedAlbum.equals("")) {
@@ -75,6 +81,10 @@ public class UserHomeController {
 		}
 	}
 	
+	/*
+	 * Allows user to delete existing albums
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void deleteAlbum(ActionEvent event) {
 		if(selectedAlbum.equals("")) {
@@ -89,7 +99,6 @@ public class UserHomeController {
     			user.deleteAlbum(selectedAlbum);
     			User.write(user, user.getUsername());
     			albums = user.getAlbums();
-    			//readSerial();
     			tilePane.getChildren().clear();
     			if(albums.size() > 0) {
     				displayAlbums();
@@ -99,6 +108,10 @@ public class UserHomeController {
 		}
 	}
 	
+	/*
+	 * Allows users to rename their existing albums
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void renameAlbum(ActionEvent event) {
 		if(selectedAlbum.equals("")) {
@@ -141,6 +154,10 @@ public class UserHomeController {
 		}
 	}
 	
+	/*
+	 * Allows users to open an album page to see the photos and other details
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void openAlbum(ActionEvent event) {
 		if(selectedAlbum.equals("")) {
@@ -156,12 +173,20 @@ public class UserHomeController {
 		}
 	}
 	
+	/*
+	 * Allows users to switch over to the Search Page
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void searchPhotos(ActionEvent event) {
 		searchController.initCurrentUser(user);
 		openSearchScene(event);
 	}
 	
+	/*
+	 * Logs out of the user session and return to login page
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void logout(ActionEvent event) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -174,44 +199,80 @@ public class UserHomeController {
 		}
 	}
 	
+	/*
+	 * Set the local login scene field to same scene as that of Photos.java
+	 * @param scene Login scene from main application
+	 */
 	public void setLoginScene(Scene scene) {
 		loginScene = scene;
 	}
 	
+	/*
+	 * Opens the Login Page
+	 * @param event The event when clicked on
+	 */
 	public void openLoginScene(ActionEvent event) {
 		Stage primaryStage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
 		primaryStage.setTitle("Login");
 		primaryStage.setScene(loginScene);
 	}
 	
+	/*
+	 * Set the local Album scene field to same scene as that of Photos.java
+	 * @param scene Album scene from main application
+	 */
 	public void setAlbumScene(Scene scene) {
 		albumScene = scene;
 	}
 	
+	/*
+	 * Opens the Album details Page
+	 * @param event The event when clicked on
+	 */
 	public void openAlbumScene(ActionEvent event) {
 		Stage primaryStage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
 		primaryStage.setTitle("Album Details");
 		primaryStage.setScene(albumScene);
 	}
 	
+	/*
+	 * Set the local Search scene field to same scene as that of Photos.java
+	 * @param scene Search scene from main application
+	 */
 	public void setSearchScene(Scene scene) {
 		searchScene = scene;
 	}
 	
+	/*
+	 * Opens the Search Page
+	 * @param event The event when clicked on
+	 */
 	public void openSearchScene(ActionEvent event) {
 		Stage primaryStage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
 		primaryStage.setTitle("Search");
 		primaryStage.setScene(searchScene);
 	}
 	
+	/*
+	 * Transfers the album controller object in Photos.java to this file
+	 * @param controller Album Controller from Photos.java
+	 */
 	public void setAlbumController(AlbumController controller) {
 		albumController = controller;
 	}
 	
+	/*
+	 * Transfers the search controller object in Photos.java to this file
+	 * @param controller Search Controller from Photos.java
+	 */
 	public void setSearchController(SearchPageController controller) {
 		searchController = controller;
 	}
 	
+	/*
+	 * Receives current user from Login Page
+	 * @param user Current user that logged in
+	 */
 	public void initCurrentUser(User user) {
 		this.user = user;
 		readSerial();
@@ -219,6 +280,10 @@ public class UserHomeController {
 		displayAlbums();
 	}
 	
+	/*
+	 * Receives current user from Album Details and Search Pages
+	 * @param user Current user that logged in
+	 */
 	public void initCurrentUser2(User user) {
 		this.user = user;
 		albums = user.getAlbums();
@@ -226,6 +291,9 @@ public class UserHomeController {
 		displayAlbums();
 	}
 	
+	/*
+	 * Displays all albums in tile pane
+	 */
 	private void displayAlbums() {
 		for(Album album : albums) {
 			if(album.getNumOfPhotos() == 0) {
@@ -262,6 +330,9 @@ public class UserHomeController {
 		}
 	}
 	
+	/*
+	 * Resets the admin and list of albums after every change to the list
+	 */
 	private void readSerial() {
 		String name = user.getUsername();
 		user = User.read(name);
@@ -272,7 +343,12 @@ public class UserHomeController {
 			albums = user.getAlbums();
 		}
 	}
-		
+	
+	/*
+	 * Checks to see if the album name is already taken
+	 * @param name Album name to be added
+	 * @return True if album name already exists in the list of albums
+	 */
 	private boolean exists(String name) {
 		for(Album album : albums) {
 			if(album.getAlbumName().equals(name)) {
@@ -281,7 +357,12 @@ public class UserHomeController {
 		}
 		return false;
 	}
-		
+	
+	/*
+	 * Creates a popup warning whenever an invalid input occurs
+	 * @param title Text for the header
+	 * @param content Text for the main message
+	 */
 	private void setWarning(String title, String content) {
 		Alert alert = new Alert(AlertType.WARNING);
 		alert.setTitle(title);

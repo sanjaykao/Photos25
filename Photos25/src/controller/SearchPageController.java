@@ -26,6 +26,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
+/*
+ * Search Page Controller allows users to search for photos based on certain queries
+ * 
+ * @author Virginia Cheng
+ * @author Sanjay Kao
+ */
 
 public class SearchPageController {
 
@@ -45,11 +51,19 @@ public class SearchPageController {
 	private Scene loginScene;
 	
 	public UserHomeController userController;
+	
+	/*
+	 * When initialized, combobox for compareType is filled in
+	 */
 	@FXML
 	private void initialize() {
 		compareType.getItems().setAll("SINGLE", "AND", "OR");
 	}
 	
+	/*
+	 * Processes the 2 DatePicker inputs given to perform the search
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void searchByDateBtn(ActionEvent event) {
 		if(firstDate.getValue() == null || secondDate.getValue() == null) {
@@ -62,7 +76,7 @@ public class SearchPageController {
 			Date date1 = Date.from(firstInstant);
 			
 			LocalDate secondLocal = secondDate.getValue();
-			Instant secondInstant = Instant.from(secondLocal.atStartOfDay(ZoneId.systemDefault()));
+			Instant secondInstant = Instant.from(secondLocal.plusDays(1).atStartOfDay(ZoneId.systemDefault()));
 			Date date2 = Date.from(secondInstant);
 			
 			picResults = searchByDate(date1, date2);
@@ -78,11 +92,12 @@ public class SearchPageController {
 		}
 	}
 	
+	/*
+	 * Processes the ComboBox inputs to perform the search
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void searchByTagBtn(ActionEvent event) {
-		//Tag tag1;
-		//Tag tag2;
-		
 		if(albums.size() == 0) {
 			setWarning("No pictures to search", "Please add pictures");
 		} else if(compareType.getValue() == null) { 
@@ -90,7 +105,6 @@ public class SearchPageController {
 		} else if(tag1.getValue() == null) {
 			setWarning("No valid tags to search", "Please select at least one tag");
 		} else if(compareType.getValue().equals("SINGLE")) {
-			//tag1 = new Tag(name1.getValue(), value1.getText().trim());
 			picResults = searchByTag(tag1.getValue(), null, compareType.getValue());
 			
 			if(picResults.size() == 0) {
@@ -102,8 +116,6 @@ public class SearchPageController {
 			setWarning("Invalid input", "Please choose a second tag for AND/OR comparisons");
 
 		} else {
-			//tag1 = new Tag(name1.getValue(), value1.getText().trim());
-			//tag2 = new Tag(name2.getValue(), value2.getText().trim());
 			picResults = searchByTag(tag1.getValue(), tag2.getValue(), compareType.getValue());
 			
 			if(picResults.size() == 0) {
@@ -113,6 +125,11 @@ public class SearchPageController {
 			}
 		}
 	}
+	
+	/*
+	 * Takes the search results and creates a new album out of the list
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void newSearchAlbum(ActionEvent event) {
 		if(picResults == null || picResults.size() == 0) {
@@ -145,12 +162,20 @@ public class SearchPageController {
 		}
 	}
 	
+	/*
+	 * Returns user back to User Home Page
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void homePage(ActionEvent event) {
 		userController.initCurrentUser2(user);
 		openUserScene(event);
 	}
 	
+	/*
+	 * Logs out of the user session and return to login page
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void logout(ActionEvent event) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -163,30 +188,54 @@ public class SearchPageController {
 		}
 	}
 	
+	/*
+	 * Set the local login scene field to same scene as that of Photos.java
+	 * @param scene Login scene from main application
+	 */
 	public void setLoginScene(Scene scene) {
 		loginScene = scene;
 	}
 	
+	/*
+	 * Opens the Login Page
+	 * @param event The event when clicked on
+	 */
 	public void openLoginScene(ActionEvent event) {
 		Stage primaryStage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
 		primaryStage.setTitle("Login");
 		primaryStage.setScene(loginScene);
 	}
 	
+	/*
+	 * Set the user home scene field to same scene as that of Photos.java
+	 * @param scene User Home scene from main application
+	 */
 	public void setUserScene(Scene scene) {
 		userScene = scene;
 	}
 	
+	/*
+	 * Opens the User Home Page
+	 * @param event The event when clicked on
+	 */
 	public void openUserScene(ActionEvent event) {
 		Stage primaryStage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
 		primaryStage.setTitle("User Home Page");
 		primaryStage.setScene(userScene);
 	}
 	
+	/*
+	 * Transfers the user controller object in Photos.java to this file
+	 * @param controller User Home Controller from Photos.java
+	 */
 	public void setUserController(UserHomeController controller) {
 		userController = controller;
 	}
 	
+	/*
+	 * Receives current user from User Home Page
+	 * @param user Current user that logged in
+	 */
 	public void initCurrentUser(User user) {
 		this.user = user;
 		albums = user.getAlbums();
@@ -202,6 +251,9 @@ public class SearchPageController {
 		setTagOptions();
 	}
 	
+	/*
+	 * Fills in the options for the ComboBox of tags
+	 */
 	private void setTagOptions() {
 		if(tags.size() > 0) {
 			ArrayList<String> tagString = new ArrayList<String>();
@@ -215,6 +267,9 @@ public class SearchPageController {
 		}
 	}
 	
+	/*
+	 * Displays the search results of pictures in the tile pane
+	 */
 	private void displayResults() {
 		tilePane.getChildren().clear();
 		for(Photo pic : picResults) {
@@ -230,7 +285,12 @@ public class SearchPageController {
 		}
 	}
 	
-	
+	/*
+	 * Finds all the pictures that were taken between the first and last dates (inclusive)
+	 * @param first First date in the range
+	 * @param last Last date in the range
+	 * @return List of photos that fulfill the query
+	 */
 	public ArrayList<Photo> searchByDate(Date first, Date last) {
 		//returns a new arraylist (copy of the photos) between first and last dates
 		ArrayList<Photo> results = new ArrayList<Photo>();
@@ -238,7 +298,6 @@ public class SearchPageController {
 		for(Album currAlbum : albums) {
 			for(Photo currPic : currAlbum.getPhotos()) {
 				Date picDate = currPic.getDate().getTime();
-				//System.out.println(picDate);
 				if(picDate.after(first) && picDate.before(last)) {
 					if(!results.contains(currPic)) {
 						results.add(currPic);
@@ -246,13 +305,18 @@ public class SearchPageController {
 				}
 			}
 		}
-		//System.out.println(results.size());
 		return results;
 	}
 	
+	/*
+	 * Finds all the pictures that fulfill the search query of tags
+	 * @param first First tag in string form
+	 * @param second Second tag in string form
+	 * @param type Comparison used for the query: SINGLE, AND, OR
+	 * @return List of photos that fulfill the query
+	 */
 	public ArrayList<Photo> searchByTag(String first, String second, String type) {
 		//type : single, and, or
-		//returns a new arraylist(copy of the photos)
 		ArrayList<Photo> results = new ArrayList<Photo>();
 		
 		for(Album currAlbum : albums) {
@@ -300,6 +364,11 @@ public class SearchPageController {
 		return results;
 	}
 	
+	/*
+	 * Checks to see if the album name is already taken
+	 * @param name Name of album to be added
+	 * @return True if album name already exists in the list of albums
+	 */
 	private boolean exists(String name) {
 		for(Album album : albums) {
 			if(album.getAlbumName().equals(name)) {
@@ -309,6 +378,11 @@ public class SearchPageController {
 		return false;
 	}
 	
+	/*
+	 * Creates a popup warning whenever an invalid input occurs
+	 * @param title Text for the header
+	 * @param content Text for the main message
+	 */
 	private void setWarning(String title, String content) {
 		Alert alert = new Alert(AlertType.WARNING);
 		alert.setTitle(title);

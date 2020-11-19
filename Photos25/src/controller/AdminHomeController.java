@@ -20,6 +20,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Optional;
 
+/*
+ * Admin Controller controls the admin user's ability to add or delete regular users
+ * 
+ * @author Virginia Cheng
+ * @author Sanjay Kao
+ */
 
 public class AdminHomeController {
 	@FXML
@@ -32,6 +38,9 @@ public class AdminHomeController {
 	
 	private Scene loginScene;
 	
+	/*
+	 * When initialized, the admin controller initializes a stock account if this is the first session
+	 */
 	@FXML
 	private void initialize() {		
 		readSerial();
@@ -47,7 +56,6 @@ public class AdminHomeController {
 		System.out.println(getList());
 		
 		if(users.size() > 0) {
-			//System.out.println("arraylist is not empty");
 			obsList = FXCollections.observableArrayList();
 	    	obsList = getList();
 
@@ -66,6 +74,10 @@ public class AdminHomeController {
 		}
 	}
 	
+	/*
+	 * Add new user to the list of existing users
+	 * @param event The event when clicked on
+	 */
 	@FXML
     private void addUser(ActionEvent event) {
 		TextInputDialog td = new TextInputDialog();
@@ -78,7 +90,6 @@ public class AdminHomeController {
 			if(exists(name)) {
 				setWarning("Cannot add user", "This name is already taken!");
 			}else {
-				//File userFile = new File("." + File.separator + name + ".dat");
 				User newUser = admin.addUser(name);
 				User.write(newUser, name);
 				AdminUser.write(admin);
@@ -93,6 +104,10 @@ public class AdminHomeController {
 		}
 	}
 	
+	/*
+	 * Delete a user from the list of existing users
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void deleteUser(ActionEvent event) {
 		String item = listView.getSelectionModel().getSelectedItem();
@@ -133,6 +148,10 @@ public class AdminHomeController {
     	}
 	}
 	
+	/*
+	 * Logs out of the admin session and return to login page
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void logout(ActionEvent event) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -145,16 +164,28 @@ public class AdminHomeController {
 		}
 	}
 	
+	/*
+	 * Set the local login scene field to same scene as that of Photos.java
+	 * @param scene Login scene from main application
+	 */
 	public void setLoginScene(Scene scene) {
 		loginScene = scene;
 	}
 	
+	/*
+	 * Opens the login page
+	 * @param event The event when clicked on
+	 */
 	public void openLoginScene(ActionEvent event) {
 		Stage primaryStage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
 		primaryStage.setTitle("Login");
 		primaryStage.setScene(loginScene);
 	}
 	
+	/*
+	 * Initialize the stock user and the stock album with already existing photos
+	 * @return The new stock user
+	 */
 	public User initStockUser() {
 		File datFile = new File("./users.dat");
 		
@@ -170,8 +201,6 @@ public class AdminHomeController {
 					String picName = stockPhotoFile.getAbsolutePath(); 
 					Calendar date = Calendar.getInstance();
 					Photo newPic = new Photo(picName, date);
-					//newPic.setCaption("this is where caption would go");
-					//System.out.print(newPic.getPhotoName() + " ");
 					stockAlbum.addPhotoToAlbum(newPic);
 					stockAlbum.findEarliestDate();
 					stockAlbum.findLatestDate();
@@ -179,31 +208,27 @@ public class AdminHomeController {
 				
 			}
 			
-			
-			//System.out.println(stockAlbum.getNumOfPhotos());
-			
 			User stockUser = new User("stock");
 			stockUser.addAlbum(stockAlbum);
 			
-			/*for(int i = 0; i < stockAlbum.getNumOfPhotos(); i++) {
-				//System.out.print(stockAlbum.getPhotos().get(i) + " ");
-				stockUser.addTag(stockAlbum.getPhotos().get(i), "name", "value");
-			}
-			
-			stockUser.addTag(stockAlbum.getPhotos().get(0), "funny", "peep");
-			stockUser.addTag(stockAlbum.getPhotos().get(1), "savage", "ugly popcorn");*/
-			
-			//System.out.println(stockUser.getAlbums());
 			return stockUser;
 		}
 		
 		return null;
 	}
 	
+	/*
+	 * Keeps track of the listener of which user is selected
+	 */
 	private void getSelected() {
 		
 	}
 	
+	/*
+	 * Gets a user's index in the arraylist of users
+	 * @param name Username of the user
+	 * @return Index of the user in the arraylist
+	 */
 	private int getIndex(String name) {
 		for(int i = 0; i < users.size(); i++) {
 			if(users.get(i).getUsername().equals(name)) {
@@ -213,6 +238,9 @@ public class AdminHomeController {
 		return -1;
 	}
 	
+	/*
+	 * Resets the admin and list of users after every change to the list
+	 */
 	private void readSerial() {
 		admin = AdminUser.read();
 		if(admin != null) {
@@ -223,6 +251,10 @@ public class AdminHomeController {
 		}
 	}
 	
+	/*
+	 * Gets the list of users from the users.dat file
+	 * @return List of existing users
+	 */
 	private ObservableList<String> getList(){
 		ObservableList<String> temp = FXCollections.observableArrayList();
 		for(User user : users) {
@@ -231,6 +263,10 @@ public class AdminHomeController {
 		return temp;
 	}
 	
+	/*
+	 * Checks to see if username already taken
+	 * @return True if username already exists
+	 */
 	private boolean exists(String name) {
 		for(User user : users) {
 			if(user.getUsername().equals(name)) {
@@ -240,6 +276,11 @@ public class AdminHomeController {
 		return false;
 	}
 	
+	/*
+	 * Creates a popup warning whenever an invalid input occurs
+	 * @param title Text for the header
+	 * @param content Text for the main message
+	 */
 	private void setWarning(String title, String content) {
 		Alert alert = new Alert(AlertType.WARNING);
 		alert.setHeaderText(title);

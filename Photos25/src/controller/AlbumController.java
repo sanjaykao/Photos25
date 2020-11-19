@@ -26,21 +26,18 @@ import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.Optional;
 
-//import app.Photos;
-
+/*
+ * Album Controller allows users to manipulate the photos inside each individual album
+ * 
+ * @author Virginia Cheng
+ * @author Sanjay Kao
+ */
 
 public class AlbumController {
-	@FXML
-	private TilePane tilePane;
-	
-	@FXML
-	private AnchorPane anchorPane;
-	
-	@FXML 
-	private AnchorPane anchorPane2;
-	
-	@FXML
-	private TextArea details;
+	@FXML private TilePane tilePane;
+	@FXML private AnchorPane anchorPane;
+	@FXML private AnchorPane anchorPane2;
+	@FXML private TextArea details;
 	
 	private ArrayList<Photo> photos;
 	private String selectedPhoto;
@@ -54,6 +51,9 @@ public class AlbumController {
 	
 	public UserHomeController userController;
 	
+	/*
+	 * Initializes the controller when called in Photos.java
+	 */
 	@FXML
 	private void initialize() {
 		selectedPhoto = "";
@@ -61,10 +61,10 @@ public class AlbumController {
 		index = 0;
 	}
 	
-	public void start(Stage mainStage) {
-		
-	}
-	
+	/*
+	 * Adds a photo to the current album
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void addPhoto(ActionEvent event) {
 		if(!selectedPhoto.equals("")) {
@@ -82,8 +82,6 @@ public class AlbumController {
 			if(!ext.equals("jpg") && !ext.equals("jpeg") && !ext.equals("gif") && !ext.equals("bmp") && !ext.equals("png")) {
 				setWarning("Can't add photo", "The file you selected is not the right format");
 			}else {
-				//File file = new File(path);
-				//Image image = new Image(file.toURI().toString(), 100, 0, false, false);
 				Calendar date = Calendar.getInstance();
 				boolean photoExists = false;
 				for(Photo photo : photos) {
@@ -108,6 +106,10 @@ public class AlbumController {
 		}
 	}
 	
+	/*
+	 * Deletes a photo from the current album
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void deletePhoto(ActionEvent event) {
 		if(slideClicked) {
@@ -136,6 +138,10 @@ public class AlbumController {
 		}
 	}
 	
+	/*
+	 * Adds a caption to the selected photo
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void addCap(ActionEvent event) {
 		if(slideClicked) {
@@ -180,6 +186,10 @@ public class AlbumController {
 		}
 	}
 	
+	/*
+	 * Adds a tag to the selected photo
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void addTag(ActionEvent event) {
 		if(slideClicked) {
@@ -275,6 +285,10 @@ public class AlbumController {
 		}
 	}
 	
+	/*
+	 * Deletes a tag from the selected photo
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void deleteTag(ActionEvent event) {
 		if(slideClicked) {
@@ -323,6 +337,10 @@ public class AlbumController {
 		} 
 	}
 	
+	/*
+	 * Copies a photo from one album to another
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void copyPhoto(ActionEvent event) {
 		if(slideClicked) {
@@ -380,6 +398,10 @@ public class AlbumController {
 		}
 	}
 	
+	/*
+	 * Moves a photo from one album to another
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void movePhoto(ActionEvent event) {
 		if(slideClicked) {
@@ -444,6 +466,10 @@ public class AlbumController {
 		}
 	}
 	
+	/*
+	 * Allows users to preview each picture with its details
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void preview(ActionEvent event) {
 		if(slideClicked) {
@@ -481,6 +507,10 @@ public class AlbumController {
 		}
 	}
 	
+	/*
+	 * Allows users to view each picture in an album in a slideshow
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void slideshow(ActionEvent event) {
 		if(!selectedPhoto.equals("")) {
@@ -516,12 +546,20 @@ public class AlbumController {
 		}
 	}
 	
+	/*
+	 * Returns the user to the User Home Page
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void homePage(ActionEvent event) {
 		userController.initCurrentUser2(user);
 		openUserScene(event);
 	}
 	
+	/*
+	 * Logs out of the user session and return to login page
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void logout(ActionEvent event) {
 		if(!selectedPhoto.equals("")) {
@@ -537,6 +575,10 @@ public class AlbumController {
 		}
 	}
 	
+	/*
+	 * Allows users to back to a previous photo in a slideshow
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void previousPhoto(ActionEvent event) {
 		if(!selectedPhoto.equals("")) {
@@ -572,6 +614,10 @@ public class AlbumController {
 		}
 	}
 	
+	/*
+	 * Allows users to the next photo in a slideshow
+	 * @param event The event when clicked on
+	 */
 	@FXML
 	private void nextPhoto(ActionEvent event) {
 		if(!selectedPhoto.equals("")) {
@@ -607,30 +653,55 @@ public class AlbumController {
 		}
 	}
 	
+	/*
+	 * Set the local login scene field to same scene as that of Photos.java
+	 * @param scene Login scene from main application
+	 */
 	public void setLoginScene(Scene scene) {
 		loginScene = scene;
 	}
 	
+	/*
+	 * Opens the Login Page
+	 * @param event The event when clicked on
+	 */
 	public void openLoginScene(ActionEvent event) {
 		Stage primaryStage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
 		primaryStage.setTitle("Login");
 		primaryStage.setScene(loginScene);
 	}
 	
+	/*
+	 * Set the local user home scene field to same scene as that of Photos.java
+	 * @param scene User Home scene from main application
+	 */
 	public void setUserScene(Scene scene) {
 		userScene = scene;
 	}
 	
+	/*
+	 * Opens the User Home Page
+	 * @param event The event when clicked on
+	 */
 	public void openUserScene(ActionEvent event) {
 		Stage primaryStage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
 		primaryStage.setTitle("User Home Page");
 		primaryStage.setScene(userScene);
 	}
 	
+	/*
+	 * Transfers the user controller object in Photos.java to this file
+	 * @param controller User Home Controller from Photos.java
+	 */
 	public void setUserController(UserHomeController controller) {
 		userController = controller;
 	}
 	
+	/*
+	 * Receives current user and album from User Home Page
+	 * @param user Current user that logged in
+	 * @param album Current album that's being opened
+	 */
 	public void initCurrentUserAlbum(User user, Album album) {
 		this.user = user;
 		this.album = album;
@@ -641,6 +712,9 @@ public class AlbumController {
 		displayPhotos();
 	}
 	
+	/*
+	 * Displays the photos in a tile pane
+	 */
 	private void displayPhotos() {
 		for(Photo photo : photos) {
 			//Image image = photo.getImage();
@@ -660,6 +734,11 @@ public class AlbumController {
 		}
 	}
 	
+	/*
+	 * Creates a popup warning whenever an invalid input occurs
+	 * @param title Text for the header
+	 * @param content Text for the main message
+	 */
 	private void setWarning(String title, String content) {
 		Alert alert = new Alert(AlertType.WARNING);
 		alert.setHeaderText(title);

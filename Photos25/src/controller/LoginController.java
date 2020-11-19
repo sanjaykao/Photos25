@@ -15,6 +15,12 @@ import javafx.stage.Stage;
 import model.AdminUser;
 import model.User;
 
+/*
+ * Login Controller authenticates valid users
+ * 
+ * @author Virginia Cheng
+ * @author Sanjay Kao
+ */
 
 public class LoginController {
 
@@ -28,12 +34,11 @@ public class LoginController {
 	private Scene userScene;
 	
 	public UserHomeController userController;
-	//public AdminHomeController adminController; 
 	
-	public void start(Stage mainStage) {
-
-	 }
-	
+	/*
+	 * Authenticates the login info: admin or an existing user
+	 * @param event The event when clicked on
+	 */
 	@FXML 
 	private void loginAction(ActionEvent event) throws IOException, ClassNotFoundException {
 		
@@ -77,32 +82,48 @@ public class LoginController {
 		} 
 	}
 	
+	/*
+	 * Set the admin home scene field to same scene as that of Photos.java
+	 * @param scene Admin Home scene from main application
+	 */
 	public void setAdminScene(Scene scene) {
 		adminScene = scene;
 	}
 	
+	/*
+	 * Opens the Admin Home Page
+	 * @param event The event when clicked on
+	 */
 	public void openAdminScene(ActionEvent event) {
 		Stage primaryStage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
 		primaryStage.setTitle("Admin User Home Page");
 		primaryStage.setScene(adminScene);
 	}
 	
+	/*
+	 * Set the user home scene field to same scene as that of Photos.java
+	 * @param scene User Home scene from main application
+	 */
 	public void setUserScene(Scene scene) {
 		userScene = scene;
 	}
 	
+	/*
+	 * Opens the User Home Page
+	 * @param event The event when clicked on
+	 */
 	public void openUserScene(ActionEvent event) {
 		Stage primaryStage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
 		primaryStage.setTitle("User Home Page");
 		primaryStage.setScene(userScene);
 	}
 	
+	/*
+	 * Transfers the user controller object in Photos.java to this file
+	 * @param controller User Home Controller from Photos.java
+	 */
 	public void setUserController(UserHomeController controller) {
 		this.userController = controller;		
 	}
-	
-	/*public void setAdminController(AdminHomeController controller) {
-		this.adminController = controller;
-	}*/
 	
 }
