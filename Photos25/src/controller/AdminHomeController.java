@@ -53,7 +53,6 @@ public class AdminHomeController {
 			User.write(stockUser, stockUser.getUsername());
 			users = admin.getUsers();
 		} 
-		System.out.println(getList());
 		
 		if(users.size() > 0) {
 			obsList = FXCollections.observableArrayList();
@@ -99,7 +98,6 @@ public class AdminHomeController {
 				listView.setItems(obsList);
 				int ind = getIndex(name);
 				listView.getSelectionModel().select(ind);
-				System.out.println(getList());
 			}
 		}
 	}
@@ -191,7 +189,6 @@ public class AdminHomeController {
 		
 		//create the stock account
 		if(!datFile.exists() || !datFile.isFile() || !datFile.canRead()) {
-			System.out.println("enters stock init");
 			Album stockAlbum = new Album("stock");
 			File stockPhotoFile;
 			for(int i = 1; i <= 7; i++) {

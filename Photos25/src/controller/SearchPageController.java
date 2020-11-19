@@ -80,9 +80,6 @@ public class SearchPageController {
 			Date date2 = Date.from(secondInstant);
 			
 			picResults = searchByDate(date1, date2);
-			for(int i = 0; i < picResults.size(); i++) {
-				System.out.println(picResults.get(i).photoName);
-			}
 			
 			if(picResults.size() == 0) {
 				setWarning("Empty search result", "There are no photos that fit the search criteria");

@@ -237,9 +237,6 @@ public class User implements Serializable{
 	 */
 	public static User read(String name) {
 		storeFile = name + ".dat";
-		System.out.println(storeFile);
-		//File file = new File(storeDir + File.separator + storeFile);
-		//System.out.println(file.exists());
 		ObjectInputStream ois;
 		try {
 			ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + storeFile));

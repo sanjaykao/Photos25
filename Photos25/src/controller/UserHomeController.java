@@ -74,7 +74,6 @@ public class UserHomeController {
 				user.createAlbum(name);
 				User.write(user, user.getUsername());
 				albums = user.getAlbums();
-				System.out.println(albums.get(1));
 				tilePane.getChildren().clear();
 				displayAlbums();	
 			}
